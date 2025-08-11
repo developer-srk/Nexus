@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rewards - FocusZone</title>
+    <link rel="stylesheet" href="../css/premium-styles.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-background">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="premium-navbar">
+        <div class="nav-container">
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <i class="fas fa-gem"></i>
+                </div>
+                <div class="logo-text">
+                    <h2>Rewards</h2>
+                    <span class="logo-subtitle">Gamification</span>
+                </div>
+            </div>
+            <button class="btn-glass" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Player Stats Header -->
+    <section class="player-stats">
+        <div class="container">
+            <div class="stats-container">
+                <div class="player-info">
+                    <div class="player-avatar">
+                        <img src="https://ui-avatars.com/api/?name=John+Doe&background=667eea&color=fff&size=80" alt="Avatar">
+                        <div class="level-badge">
+                            <span>LVL 12</span>
+                        </div>
+                    </div>
+                    <div class="player-details">
+                        <h2>John Doe</h2>
+                        <p>Productivity Master</p>
+                        <div class="xp-container">
+                            <div class="xp-bar">
+                                <div class="xp-fill" style="width: 65%">
+                                    <div class="xp-shine"></div>
+                                </div>
+                            </div>
+                            <span class="xp-text">1,250 / 2,000 XP</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="currency-display">
+                    <div class="currency-item">
+                        <div class="currency-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <span class="currency-amount">1,847</span>
+                        <span class="currency-label">Coins</span>
+                    </div>
+                    <div class="currency-item">
+                        <div class="currency-icon">
+                            <i class="fas fa-gem"></i>
+                        </div>
+                        <span class="currency-amount">23</span>
+                        <span class="currency-label">Gems</span>
+                    </div>
+                    <div class="currency-item">
+                        <div class="currency-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <span class="currency-amount">15</span>
+                        <span class="currency-label">Trophies</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rewards Tabs -->
+    <section class="rewards-section">
+        <div class="container">
+            <div class="rewards-tabs">
+                <button class="tab-btn active" data-tab="daily">Daily Rewards</button>
+                <button class="tab-btn" data-tab="achievements">Achievements</button>
+                <button class="tab-btn" data-tab="store">Reward Store</button>
+                <button class="tab-btn" data-tab="leaderboard">Leaderboard</button>
+            </div>
+
+            <!-- Daily Rewards Tab -->
+            <div class="tab-content active" id="daily-tab">
+                <div class="daily-rewards-grid">
+                    <div class="daily-reward-card claimed">
+                        <div class="reward-day">Day 1</div>
+                        <div class="reward-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="reward-amount">50 Coins</div>
+                        <div class="reward-status">
+                            <i class="fas fa-check"></i>
+                            <span>Claimed</span>
+                        </div>
+                    </div>
+
+                    <div class="daily-reward-card claimed">
+                        <div class="reward-day">Day 2</div>
+                        <div class="reward-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="reward-amount">100 XP</div>
+                        <div class="reward-status">
+                            <i class="fas fa-check"></i>
+                            <span>Claimed</span>
+                        </div>
+                    </div>
+
+                    <div class="daily-reward-card available">
+                        <div class="reward-day">Day 3</div>
+                        <div class="reward-icon">
+                            <i class="fas fa-gem"></i>
+                        </div>
+                        <div class="reward-amount">5 Gems</div>
+                        <div class="reward-status">
+                            <button class="claim-btn" onclick="claimReward(3)">
+                                <span>Claim</span>
+                                <div class="btn-glow"></div>
+                            </button>
+                        </div>
+                        <div class="reward-glow"></div>
+                    </div>
+
+                    <div class="daily-reward-card locked">
+                        <div class="reward-day">Day 4</div>
+                        <div class="reward-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="reward-amount">150 Coins</div>
+                        <div class="reward-status">
+                            <i class="fas fa-lock"></i>
+                            <span>Locked</span>
+                        </div>
+                    </div>
+
+                    <div class="daily-reward-card locked">
+                        <div class="reward-day">Day 5</div>
+                        <div class="reward-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="reward-amount">1 Trophy</div>
+                        <div class="reward-status">
+                            <i class="fas fa-lock"></i>
+                            <span>Locked</span>
+                        </div>
+                    </div>
+
+                    <div class="daily-reward-card locked special">
+                        <div class="reward-day">Day 7</div>
+                        <div class="reward-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="reward-amount">Mystery Box</div>
+                        <div class="reward-status">
+                            <i class="fas fa-lock"></i>
+                            <span>Locked</span>
+                        </div>
+                        <div class="special-badge">BONUS</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Achievements Tab -->
+            <div class="tab-content" id="achievements-tab">
+                <div class="achievements-grid">
+                    <div class="achievement-card unlocked">
+                        <div class="achievement-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <h3>Consistency Master</h3>
+                        <p>Complete 7 days in a row</p>
+                        <div class="achievement-progress">
+                            <div class="progress-premium">
+                                <div class="progress-bar-premium" style="width: 100%"></div>
+                            </div>
+                            <span class="progress-text">7/7 days</span>
+                        </div>
+                        <div class="achievement-reward">
+                            <i class="fas fa-coins"></i>
+                            <span>500 Coins</span>
+                        </div>
+                        <div class="achievement-status unlocked">
+                            <i class="fas fa-trophy"></i>
+                            <span>Unlocked</span>
+                        </div>
+                    </div>
+
+                    <div class="achievement-card in-progress">
+                        <div class="achievement-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Time Master</h3>
+                        <p>Focus for 100 hours total</p>
+                        <div class="achievement-progress">
+                            <div class="progress-premium">
+                                <div class="progress-bar-premium" style="width: 75%"></div>
+                            </div>
+                            <span class="progress-text">75/100 hours</span>
+                        </div>
+                        <div class="achievement-reward">
+                            <i class="fas fa-gem"></i>
+                            <span>10 Gems</span>
+                        </div>
+                        <div class="achievement-status in-progress">
+                            <div class="progress-ring">
+                                <div class="progress-ring-fill" style="stroke-dasharray: 75, 100"></div>
+                            </div>
+                            <span>75%</span>
+                        </div>
+                    </div>
+
+                    <div class="achievement-card locked">
+                        <div class="achievement-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>Knowledge Seeker</h3>
+                        <p>Ask AI 500 questions</p>
+                        <div class="achievement-progress">
+                            <div class="progress-premium">
+                                <div class="progress-bar-premium" style="width: 45%"></div>
+                            </div>
+                            <span class="progress-text">225/500 questions</span>
+                        </div>
+                        <div class="achievement-reward">
+                            <i class="fas fa-trophy"></i>
+                            <span>Special Badge</span>
+                        </div>
+                        <div class="achievement-status locked">
+                            <i class="fas fa-lock"></i>
+                            <span>Locked</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reward Store Tab -->
+            <div class="tab-content" id="store-tab">
+                <div class="store-categories">
+                    <button class="category-btn active" data-category="themes">Themes</button>
+                    <button class="category-btn" data-category="avatars">Avatars</button>
+                    <button class="category-btn" data-category="powerups">Power-ups</button>
+                    <button class="category-btn" data-category="premium">Premium</button>
+                </div>
+
+                <div class="store-grid">
+                    <div class="store-item">
+                        <div class="item-preview">
+                            <div class="theme-preview dark-theme">
+                                <div class="preview-elements">
+                                    <div class="element-1"></div>
+                                    <div class="element-2"></div>
+                                    <div class="element-3"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <h3>Dark Theme</h3>
+                        <p>Sleek dark interface for night owls</p>
+                        <div class="item-price">
+                            <i class="fas fa-coins"></i>
+                            <span>500 Coins</span>
+                        </div>
+                        <button class="purchase-btn owned">
+                            <i class="fas fa-check"></i>
+                            <span>Owned</span>
+                        </button>
+                    </div>
+
+                    <div class="store-item">
+                        <div class="item-preview">
+                            <div class="avatar-preview">
+                                <i class="fas fa-user-astronaut"></i>
+                            </div>
+                        </div>
+                        <h3>Astronaut Avatar</h3>
+                        <p>Reach for the stars with this space theme</p>
+                        <div class="item-price">
+                            <i class="fas fa-gem"></i>
+                            <span>5 Gems</span>
+                        </div>
+                        <button class="purchase-btn" onclick="purchaseItem('astronaut-avatar')">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Buy Now</span>
+                        </button>
+                    </div>
+
+                    <div class="store-item special">
+                        <div class="item-preview">
+                            <div class="powerup-preview">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                        </div>
+                        <h3>2x XP Boost</h3>
+                        <p>Double XP for 24 hours</p>
+                        <div class="item-price">
+                            <i class="fas fa-gem"></i>
+                            <span>10 Gems</span>
+                        </div>
+                        <button class="purchase-btn premium">
+                            <i class="fas fa-crown"></i>
+                            <span>Premium</span>
+                        </button>
+                        <div class="special-badge">LIMITED</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leaderboard Tab -->
+            <div class="tab-content" id="leaderboard-tab">
+                <div class="leaderboard-filters">
+                    <button class="filter-btn active" data-filter="weekly">This Week</button>
+                    <button class="filter-btn" data-filter="monthly">This Month</button>
+                    <button class="filter-btn" data-filter="alltime">All Time</button>
+                </div>
+
+                <div class="leaderboard-list">
+                    <div class="leaderboard-item rank-1">
+                        <div class="rank-badge">
+                            <i class="fas fa-crown"></i>
+                            <span>1</span>
+                        </div>
+                        <div class="player-info">
+                            <img src="https://ui-avatars.com/api/?name=Sarah+Johnson&background=f59e0b&color=fff&size=50" alt="Player">
+                            <div class="player-details">
+                                <span class="player-name">Sarah Johnson</span>
+                                <span class="player-stats">Level 15 • 2,450 XP</span>
+                            </div>
+                        </div>
+                        <div class="player-score">
+                            <span class="score-value">8h 45m</span>
+                            <span class="score-label">Focus Time</span>
+                        </div>
+                    </div>
+
+                    <div class="leaderboard-item rank-2">
+                        <div class="rank-badge">
+                            <span>2</span>
+                        </div>
+                        <div class="player-info">
+                            <img src="https://ui-avatars.com/api/?name=Mike+Chen&background=3b82f6&color=fff&size=50" alt="Player">
+                            <div class="player-details">
+                                <span class="player-name">Mike Chen</span>
+                                <span class="player-stats">Level 13 • 1,890 XP</span>
+                            </div>
+                        </div>
+                        <div class="player-score">
+                            <span class="score-value">7h 30m</span>
+                            <span class="score-label">Focus Time</span>
+                        </div>
+                    </div>
+
+                    <div class="leaderboard-item rank-3">
+                        <div class="rank-badge">
+                            <span>3</span>
+                        </div>
+                        <div class="player-info">
+                            <img src="https://ui-avatars.com/api/?name=Emma+Davis&background=ef4444&color=fff&size=50" alt="Player">
+                            <div class="player-details">
+                                <span class="player-name">Emma Davis</span>
+                                <span class="player-stats">Level 12 • 1,650 XP</span>
+                            </div>
+                        </div>
+                        <div class="player-score">
+                            <span class="score-value">6h 55m</span>
+                            <span class="score-label">Focus Time</span>
+                        </div>
+                    </div>
+
+                    <div class="leaderboard-item current-player">
+                        <div class="rank-badge">
+                            <span>8</span>
+                        </div>
+                        <div class="player-info">
+                            <img src="https://ui-avatars.com/api/?name=John+Doe&background=667eea&color=fff&size=50" alt="Player">
+                            <div class="player-details">
+                                <span class="player-name">John Doe (You)</span>
+                                <span class="player-stats">Level 12 • 1,250 XP</span>
+                            </div>
+                        </div>
+                        <div class="player-score">
+                            <span class="score-value">4h 20m</span>
+                            <span class="score-label">Focus Time</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Claim Reward Modal -->
+    <div id="claimRewardModal" class="premium-modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content-premium reward-modal">
+            <div class="reward-celebration">
+                <div class="reward-burst">
+                    <div class="burst-particle"></div>
+                    <div class="burst-particle"></div>
+                    <div class="burst-particle"></div>
+                    <div class="burst-particle"></div>
+                </div>
+                <div class="claimed-reward-icon">
+                    <i class="fas fa-gem"></i>
+                </div>
+            </div>
+            <h2>Reward Claimed!</h2>
+            <p>You've successfully claimed your daily reward</p>
+            <div class="claimed-items">
+                <div class="claimed-item">
+                    <i class="fas fa-gem"></i>
+                    <span>+5 Gems</span>
+                </div>
+            </div>
+            <button class="btn-premium btn-full" onclick="closeModal('claimRewardModal')">
+                <span>Awesome!</span>
+                <div class="btn-glow"></div>
+            </button>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/rewards.js"></script>
+</body>
+</html>

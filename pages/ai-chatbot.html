@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant - Enterprise Grade</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea20, #764ba220);
+            min-height: 100vh;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .chat-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .chat-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .chat-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .chat-status {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--success-color);
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.error {
+            background: var(--error-color);
+        }
+
+        .status-text {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            scroll-behavior: smooth;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(102, 126, 234, 0.5);
+            border-radius: 4px;
+        }
+
+        .chat-message {
+            margin-bottom: 1.5rem;
+            animation: messageSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-origin: bottom left;
+        }
+
+        .chat-message.user {
+            text-align: right;
+            animation: messageSlideInRight 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-origin: bottom right;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .message-header.user {
+            justify-content: flex-end;
+        }
+
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .message-avatar.ai {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .message-avatar.user {
+            background: linear-gradient(135deg, #10b981, #34d399);
+            color: white;
+        }
+
+        .message-bubble {
+            display: inline-block;
+            padding: 1.2rem 1.8rem;
+            border-radius: 20px;
+            max-width: 75%;
+            word-wrap: break-word;
+            position: relative;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .message-bubble.user {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-bottom-right-radius: 5px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .message-bubble.ai {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--text-primary);
+            border-bottom-left-radius: 5px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-bubble.error {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            border-color: #f87171;
+            color: #dc2626;
+        }
+
+        .message-timestamp {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem 1.8rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            border-bottom-left-radius: 5px;
+            margin-bottom: 1.5rem;
+            animation: messageSlideIn 0.3s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .typing-dots span {
+            width: 10px;
+            height: 10px;
+            background: #667eea;
+            border-radius: 50%;
+            animation: typingBounce 1.5s ease-in-out infinite;
+        }
+
+        .typing-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .typing-text {
+            color: var(--text-secondary);
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 1.2rem 1.8rem;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            resize: none;
+            min-height: 50px;
+            max-height: 120px;
+        }
+
+        .chat-input:focus {
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.02);
+            box-shadow: 0 0 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .chat-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .input-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .send-button, .voice-button, .clear-button {
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            font-size: 1.1rem;
+        }
+
+        .voice-button {
+            background: linear-gradient(135deg, #10b981, #34d399);
+        }
+
+        .clear-button {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+        }
+
+        .send-button:hover, .voice-button:hover, .clear-button:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .send-button:active, .voice-button:active, .clear-button:active {
+            transform: scale(0.95);
+        }
+
+        .send-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .send-button.loading i {
+            animation: spin 1s linear infinite;
+        }
+
+        .quick-suggestions {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .suggestion-chip {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        .suggestion-chip:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            border: 1px solid #f87171;
+            color: #dc2626;
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: shakeError 0.5s ease-out;
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border: 1px solid #34d399;
+            color: #059669;
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .message-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .chat-message:hover .message-actions {
+            opacity: 1;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 15px;
+            padding: 0.3rem 0.8rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes messageSlideIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes messageSlideInRight {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) translateY(50px) translateX(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0) translateX(0);
+            }
+        }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-12px);
+            }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes shakeError {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .chat-container {
+                padding: 1rem;
+            }
+            
+            .chat-header h1 {
+                font-size: 2rem;
+            }
+            
+            .message-bubble {
+                max-width: 85%;
+                padding: 1rem 1.5rem;
+            }
+            
+            .chat-input-container {
+                padding: 1rem;
+            }
+            
+            .input-actions {
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <!-- Chat Header -->
+        <div class="chat-header">
+            <h1>🤖 AI Productivity Assistant</h1>
+            <p>Your intelligent companion for focus, productivity, and success</p>
+        </div>
+
+        <!-- Chat Status -->
+        <div class="chat-status" id="chatStatus">
+            <div class="status-indicator" id="statusIndicator"></div>
+            <div class="status-text" id="statusText">AI Assistant Online</div>
+        </div>
+
+        <!-- Quick Suggestions -->
+        <div class="quick-suggestions" id="quickSuggestions">
+            <div class="suggestion-chip" data-text="How can I improve my focus?">💡 Focus Tips</div>
+            <div class="suggestion-chip" data-text="What's the best study technique?">📚 Study Methods</div>
+            <div class="suggestion-chip" data-text="How to manage stress?">🧘 Stress Relief</div>
+            <div class="suggestion-chip" data-text="Productivity hacks for work">⚡ Productivity</div>
+        </div>
+
+        <!-- Chat Messages -->
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-message ai">
+                <div class="message-header">
+                    <div class="message-avatar ai">🤖</div>
+                    <span>AI Assistant</span>
+                    <span class="message-timestamp" id="welcomeTime"></span>
+                </div>
+                <div class="message-bubble ai">
+                    👋 Hello! I'm your advanced AI productivity assistant. I'm here to help you with:
+                    <br><br>
+                    • 🎯 <strong>Focus & Concentration</strong> - Techniques and strategies
+                    <br>
+                    • 📚 <strong>Study Methods</strong> - Effective learning approaches
+                    <br>
+                    • ⚡ <strong>Productivity</strong> - Time management and efficiency
+                    <br>
+                    • 🧘 <strong>Stress Management</strong> - Relaxation and mindfulness
+                    <br>
+                    • 📈 <strong>Goal Setting</strong> - Planning and achievement strategies
+                    <br><br>
+                    What would you like to improve today?
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="chat-input-container">
+            <textarea class="chat-input" 
+                      id="chatInput" 
+                      placeholder="Ask me anything about productivity, focus, or study techniques..."
+                      rows="1"></textarea>
+            <div class="input-actions">
+                <button class="send-button" id="sendButton" title="Send Message">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+                <button class="voice-button" id="voiceButton" title="Voice Input">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                <button class="clear-button" id="clearButton" title="Clear Chat">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class EnterpriseAIChatbot {
+            constructor() {
+                this.chatMessages = document.getElementById('chatMessages');
+                this.chatInput = document.getElementById('chatInput');
+                this.sendButton = document.getElementById('sendButton');
+                this.voiceButton = document.getElementById('voiceButton');
+                this.clearButton = document.getElementById('clearButton');
+                this.statusIndicator = document.getElementById('statusIndicator');
+                this.statusText = document.getElementById('statusText');
+                this.quickSuggestions = document.getElementById('quickSuggestions');
+                
+                this.isTyping = false;
+                this.messageHistory = [];
+                this.isListening = false;
+                this.recognition = null;
+                
+                // Advanced AI Response System
+                this.knowledgeBase = {
+                    focus: {
+                        keywords: ['focus', 'concentration', 'attention', 'distraction', 'concentrate'],
+                        responses: [
+                            {
+                                text: "🎯 **Focus Enhancement Strategies:**\n\n**1. Pomodoro Technique**\n• Work for 25 minutes, break for 5\n• After 4 cycles, take a 15-30 minute break\n• Use our focus mode with growing animations!\n\n**2. Environment Optimization**\n• Remove distractions from workspace\n• Use noise-canceling headphones\n• Maintain proper lighting\n\n**3. Deep Work Sessions**\n• Block 2-4 hour periods for complex tasks\n• Turn off notifications\n• Single-task focus\n\n**4. Mindfulness Practice**\n• 5-minute meditation before work\n• Breathing exercises during breaks\n• Present-moment awareness\n\nWould you like me to guide you through any of these techniques?",
+                                confidence: 0.95
+                            }
+                        ]
+                    },
+                    study: {
+                        keywords: ['study', 'learning', 'memory', 'retention', 'exam', 'test', 'academic'],
+                        responses: [
+                            {
+                                text: "📚 **Evidence-Based Study Techniques:**\n\n**1. Active Recall**\n• Test yourself without looking at notes\n• Use flashcards effectively\n• Explain concepts aloud\n\n**2. Spaced Repetition**\n• Review material at increasing intervals\n• Day 1, 3, 7, 14, 30\n• Use our flashcard system!\n\n**3. Feynman Technique**\n• Explain concepts in simple terms\n• Identify knowledge gaps\n• Simplify and analogize\n\n**4. Interleaving**\n• Mix different topics in study sessions\n• Improves discrimination between concepts\n• Better long-term retention\n\n**5. Elaborative Interrogation**\n• Ask 'why' and 'how' questions\n• Connect new info to existing knowledge\n• Create meaningful associations\n\nWhich technique would you like to implement first?",
+                                confidence: 0.98
+                            }
+                        ]
+                    },
+                    productivity: {
+                        keywords: ['productivity', 'efficiency', 'time management', 'organization', 'workflow'],
+                        responses: [
+                            {
+                                text: "⚡ **Productivity Optimization System:**\n\n**1. Priority Matrix (Eisenhower)**\n• Urgent + Important = Do First\n• Important + Not Urgent = Schedule\n• Urgent + Not Important = Delegate\n• Neither = Eliminate\n\n**2. Time Blocking**\n• Assign specific times to tasks\n• Include buffer time\n• Batch similar activities\n\n**3. Energy Management**\n• Identify your peak hours\n• Match task difficulty to energy levels\n• Take strategic breaks\n\n**4. System Setup**\n• Use our analytics dashboard\n• Track your progress\n• Automate repetitive tasks\n\n**5. Weekly Reviews**\n• Assess what worked\n• Adjust strategies\n• Plan next week\n\nWhat's your biggest productivity challenge right now?",
+                                confidence: 0.96
+                            }
+                        ]
+                    },
+                    stress: {
+                        keywords: ['stress', 'anxiety', 'overwhelmed', 'pressure', 'calm', 'relax'],
+                        responses: [
+                            {
+                                text: "🧘 **Stress Management Toolkit:**\n\n**1. Immediate Relief (2-5 minutes)**\n• 4-7-8 Breathing: Inhale 4, hold 7, exhale 8\n• Progressive muscle relaxation\n• Cold water on wrists/face\n\n**2. Daily Practices**\n• 10-minute morning meditation\n• Regular exercise (even 15 min walks)\n• Journaling thoughts and feelings\n\n**3. Cognitive Techniques**\n• Challenge negative thoughts\n• Focus on what you can control\n• Break problems into smaller pieces\n\n**4. Lifestyle Adjustments**\n• Consistent sleep schedule\n• Limit caffeine after 2 PM\n• Regular social connections\n\n**5. Emergency Plan**\n• Identify early warning signs\n• Have go-to coping strategies\n• Know when to seek help\n\nWhat type of stress are you experiencing most?",
+                                confidence: 0.94
+                            }
+                        ]
+                    },
+                    motivation: {
+                        keywords: ['motivation', 'goals', 'procrastination', 'discipline', 'habits'],
+                        responses: [
+                            {
+                                text: "🚀 **Motivation & Goal Achievement:**\n\n**1. SMART Goals Framework**\n• Specific, Measurable, Achievable\n• Relevant, Time-bound\n• Write them down and review daily\n\n**2. Habit Stacking**\n• Link new habits to existing ones\n• Start incredibly small (2-minute rule)\n• Focus on consistency over perfection\n\n**3. Motivation Triggers**\n• Visualize success regularly\n• Track progress visually\n• Celebrate small wins\n\n**4. Beat Procrastination**\n• 2-minute rule: If it takes <2 min, do it now\n• Break tasks into tiny steps\n• Use implementation intentions\n\n**5. Accountability Systems**\n• Share goals with others\n• Use our progress tracking\n• Regular check-ins\n\nWhat specific goal are you working toward?",
+                                confidence: 0.97
+                            }
+                        ]
+                    }
+                };
+                
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.initSpeechRecognition();
+                this.setWelcomeTime();
+                this.autoResizeInput();
+                this.showOnlineStatus();
+            }
+
+            bindEvents() {
+                // Send message events
+                this.sendButton.addEventListener('click', () => this.sendMessage());
+                this.chatInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sendMessage();
+                    }
+                });
+
+                // Voice input
+                this.voiceButton.addEventListener('click', () => this.toggleVoiceInput());
+
+                // Clear chat
+                this.clearButton.addEventListener('click', () => this.clearChat());
+
+                // Quick suggestions
+                this.quickSuggestions.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('suggestion-chip')) {
+                        const text = e.target.getAttribute('data-text');
+                        this.chatInput.value = text;
+                        this.sendMessage();
+                    }
+                });
+
+                // Auto-focus input
+                this.chatInput.focus();
+            }
+
+            autoResizeInput() {
+                this.chatInput.addEventListener('input', () => {
+                    this.chatInput.style.height = 'auto';
+                    this.chatInput.style.height = Math.min(this.chatInput.scrollHeight, 120) + 'px';
+                });
+            }
+
+            setWelcomeTime() {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                document.getElementById('welcomeTime').textContent = timeString;
+            }
+
+            showOnlineStatus() {
+                this.statusIndicator.className = 'status-indicator';
+                this.statusText.textContent = 'AI Assistant Online';
+            }
+
+            showOfflineStatus() {
+                this.statusIndicator.className = 'status-indicator error';
+                this.statusText.textContent = 'AI Assistant Offline';
+            }
+
+            initSpeechRecognition() {
+                if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                    this.recognition = new SpeechRecognition();
+                    this.recognition.continuous = false;
+                    this.recognition.interimResults = false;
+                    this.recognition.lang = 'en-US';
+
+                    this.recognition.onresult = (event) => {
+                        const transcript = event.results[0][0].transcript;
+                        this.chatInput.value = transcript;
+                        this.isListening = false;
+                        this.updateVoiceButton();
+                    };
+
+                    this.recognition.onerror = (event) => {
+                        console.error('Speech recognition error:', event.error);
+                        this.isListening = false;
+                        this.updateVoiceButton();
+                        this.showError('Voice recognition failed. Please try typing instead.');
+                    };
+
+                    this.recognition.onend = () => {
+                        this.isListening = false;
+                        this.updateVoiceButton();
+                    };
+                } else {
+                    this.voiceButton.style.display = 'none';
+                }
+            }
+
+            toggleVoiceInput() {
+                if (!this.recognition) return;
+
+                if (this.isListening) {
+                    this.recognition.stop();
+                } else {
+                    try {
+                        this.recognition.start();
+                        this.isListening = true;
+                        this.updateVoiceButton();
+                    } catch (error) {
+                        this.showError('Voice input not available.');
+                    }
+                }
+            }
+
+            updateVoiceButton() {
+                if (this.isListening) {
+                    this.voiceButton.innerHTML = '<i class="fas fa-stop"></i>';
+                    this.voiceButton.style.background = 'linear-gradient(135deg, #ef4444, #f87171)';
+                } else {
+                    this.voiceButton.innerHTML = '<i class="fas fa-microphone"></i>';
+                    this.voiceButton.style.background = 'linear-gradient(135deg, #10b981, #34d399)';
+                }
+            }
+
+            async sendMessage() {
+                const message = this.chatInput.value.trim();
+                if (!message || this.isTyping) return;
+
+                try {
+                    // Validate input
+                    if (message.length > 1000) {
+                        this.showError('Message too long. Please keep it under 1000 characters.');
+                        return;
+                    }
+
+                    // Add user message
+                    this.addMessage(message, 'user');
+                    this.messageHistory.push({role: 'user', content: message});
+                    this.chatInput.value = '';
+                    this.chatInput.style.height = 'auto';
+
+                    // Hide suggestions after first message
+                    if (this.messageHistory.length === 1) {
+                        this.quickSuggestions.style.display = 'none';
+                    }
+
+                    // Show typing indicator
+                    this.showTypingIndicator();
+
+                    // Get AI response
+                    const response = await this.getAdvancedAIResponse(message);
+                    
+                    // Remove typing indicator and add AI response
+                    this.hideTypingIndicator();
+                    this.addMessage(response.text, 'ai', response.confidence);
+                    this.messageHistory.push({role: 'assistant', content: response.text});
+
+                } catch (error) {
+                    this.hideTypingIndicator();
+                    console.error('Error sending message:', error);
+                    this.showError('Failed to send message. Please try again.');
+                }
+            }
+
+            addMessage(text, sender, confidence = null) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `chat-message ${sender}`;
+                
+                const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                const headerDiv = document.createElement('div');
+                headerDiv.className = `message-header ${sender}`;
+                
+                if (sender === 'user') {
+                    headerDiv.innerHTML = `
+                        <span class="message-timestamp">${timestamp}</span>
+                        <span>You</span>
+                        <div class="message-avatar user">👤</div>
+                    `;
+                } else {
+                    const confidenceText = confidence ? ` (${Math.round(confidence * 100)}% confidence)` : '';
+                    headerDiv.innerHTML = `
+                        <div class="message-avatar ai">🤖</div>
+                        <span>AI Assistant${confidenceText}</span>
+                        <span class="message-timestamp">${timestamp}</span>
+                    `;
+                }
+                
+                const bubbleDiv = document.createElement('div');
+                bubbleDiv.className = `message-bubble ${sender}`;
+                
+                // Format AI responses with better styling
+                if (sender === 'ai') {
+                    bubbleDiv.innerHTML = this.formatAIResponse(text);
+                } else {
+                    bubbleDiv.textContent = text;
+                }
+                
+                // Add message actions
+                const actionsDiv = document.createElement('div');
+                actionsDiv.className = 'message-actions';
+                actionsDiv.innerHTML = `
+                    <button class="action-btn" onclick="copyMessage(this)">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                    ${sender === 'ai' ? '<button class="action-btn" onclick="rateMessage(this, true)"><i class="fas fa-thumbs-up"></i></button><button class="action-btn" onclick="rateMessage(this, false)"><i class="fas fa-thumbs-down"></i></button>' : ''}
+                `;
+                
+                messageDiv.appendChild(headerDiv);
+                messageDiv.appendChild(bubbleDiv);
+                messageDiv.appendChild(actionsDiv);
+                
+                this.chatMessages.appendChild(messageDiv);
+                this.scrollToBottom();
+            }
+
+            formatAIResponse(text) {
+                return text
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                    .replace(/\n/g, '<br>');
+            }
+
+            showTypingIndicator() {
+                this.isTyping = true;
+                this.sendButton.classList.add('loading');
+                this.sendButton.disabled = true;
+                
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'typing-indicator';
+                typingDiv.id = 'typingIndicator';
+                typingDiv.innerHTML = `
+                    <div class="typing-dots">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <span class="typing-text">AI is analyzing and crafting response...</span>
+                `;
+                
+                this.chatMessages.appendChild(typingDiv);
+                this.scrollToBottom();
+            }
+
+            hideTypingIndicator() {
+                this.isTyping = false;
+                this.sendButton.classList.remove('loading');
+                this.sendButton.disabled = false;
+                
+                const typingIndicator = document.getElementById('typingIndicator');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+            }
+
+            async getAdvancedAIResponse(message) {
+                // Simulate processing time
+                await new Promise(resolve => setTimeout(resolve, 1500 + Math.random() * 2000));
+                
+                const lowerMessage = message.toLowerCase();
+                
+                // Find best matching knowledge area
+                let bestMatch = null;
+                let highestScore = 0;
+                
+                for (const [category, data] of Object.entries(this.knowledgeBase)) {
+                    const score = this.calculateRelevanceScore(lowerMessage, data.keywords);
+                    if (score > highestScore) {
+                        highestScore = score;
+                        bestMatch = data;
+                    }
+                }
+                
+                // Return appropriate response
+                if (bestMatch && highestScore > 0.3) {
+                    const response = bestMatch.responses[0];
+                    return {
+                        text: response.text,
+                        confidence: response.confidence * Math.min(highestScore, 1)
+                    };
+                }
+                
+                // Fallback responses for various scenarios
+                return this.getFallbackResponse(lowerMessage);
+            }
+
+            calculateRelevanceScore(message, keywords) {
+                let score = 0;
+                keywords.forEach(keyword => {
+                    if (message.includes(keyword)) {
+                        score += 1 / keywords.length;
+                    }
+                });
+                return score;
+            }
+
+            getFallbackResponse(message) {
+                const fallbackResponses = [
+                    {
+                        condition: (msg) => msg.includes('hello') || msg.includes('hi') || msg.includes('hey'),
+                        response: "👋 Hello! I'm here to help you with productivity, focus, study techniques, and stress management. What specific area would you like to work on today?",
+                        confidence: 0.9
+                    },
+                    {
+                        condition: (msg) => msg.includes('thank') || msg.includes('thanks'),
+                        response: "🙏 You're very welcome! I'm glad I could help. Remember, small consistent improvements lead to big results. Is there anything else you'd like to know about productivity or focus?",
+                        confidence: 0.95
+                    },
+                    {
+                        condition: (msg) => msg.includes('help') || msg.includes('assist'),
+                        response: "💡 I'm here to assist you with:\n\n• **Focus & Concentration** - Techniques to improve attention\n• **Study Methods** - Evidence-based learning strategies\n• **Productivity** - Time management and efficiency\n• **Stress Management** - Coping strategies and relaxation\n• **Goal Setting** - Planning and achievement methods\n\nWhat specific challenge are you facing?",
+                        confidence: 0.92
+                    },
+                    {
+                        condition: (msg) => msg.length < 10,
+                        response: "🤔 I'd love to help you with that! Could you provide a bit more detail about what you're looking for? I can assist with focus techniques, study methods, productivity tips, or stress management strategies.",
+                        confidence: 0.7
+                    }
+                ];
+                
+                for (const fallback of fallbackResponses) {
+                    if (fallback.condition(message)) {
+                        return {
+                            text: fallback.response,
+                            confidence: fallback.confidence
+                        };
+                    }
+                }
+                
+                // Ultimate fallback
+                return {
+                    text: "🤖 I understand you're looking for assistance! While I specialize in productivity, focus, study techniques, and stress management, I want to make sure I give you the most helpful response. Could you rephrase your question or let me know which of these areas interests you most?\n\n• 🎯 **Focus & Concentration**\n• 📚 **Study & Learning**\n• ⚡ **Productivity & Time Management**\n• 🧘 **Stress & Anxiety Management**",
+                    confidence: 0.6
+                };
+            }
+
+            clearChat() {
+                if (confirm('Are you sure you want to clear the chat history?')) {
+                    this.chatMessages.innerHTML = `
+                        <div class="chat-message ai">
+                            <div class="message-header">
+                                <div class="message-avatar ai">🤖</div>
+                                <span>AI Assistant</span>
+                                <span class="message-timestamp">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                            </div>
+                            <div class="message-bubble ai">
+                                🔄 Chat cleared! I'm ready to help you with productivity, focus, study techniques, and stress management. What would you like to work on?
+                            </div>
+                        </div>
+                    `;
+                    this.messageHistory = [];
+                    this.quickSuggestions.style.display = 'flex';
+                    this.showSuccess('Chat history cleared successfully!');
+                }
+            }
+
+            scrollToBottom() {
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+
+            showError(message) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+                
+                this.chatMessages.appendChild(errorDiv);
+                setTimeout(() => errorDiv.remove(), 5000);
+                this.scrollToBottom();
+            }
+
+            showSuccess(message) {
+                const successDiv = document.createElement('div');
+                successDiv.className = 'success-message';
+                successDiv.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+                
+                this.chatMessages.appendChild(successDiv);
+                setTimeout(() => successDiv.remove(), 3000);
+                this.scrollToBottom();
+            }
+        }
+
+        // Global functions for message actions
+        function copyMessage(button) {
+            const messageText = button.closest('.chat-message').querySelector('.message-bubble').textContent;
+            navigator.clipboard.writeText(messageText).then(() => {
+                button.innerHTML = '<i class="fas fa-check"></i> Copied';
+                setTimeout(() => {
+                    button.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                }, 2000);
+            });
+        }
+
+        function rateMessage(button, isPositive) {
+            const icon = isPositive ? 'fas fa-heart' : 'fas fa-times';
+            const text = isPositive ? 'Helpful!' : 'Not helpful';
+            button.innerHTML = `<i class="${icon}"></i> ${text}`;
+            button.style.color = isPositive ? '#10b981' : '#ef4444';
+            
+            // Disable other rating button
+            const siblingButton = isPositive ? button.nextElementSibling : button.previousElementSibling;
+            if (siblingButton) siblingButton.style.opacity = '0.3';
+        }
+
+        // Initialize chatbot when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            window.chatbot = new EnterpriseAIChatbot();
+            console.log('🤖 Enterprise AI Chatbot initialized successfully!');
+        });
+
+        // Handle page visibility changes
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                window.chatbot?.showOfflineStatus();
+            } else {
+                window.chatbot?.showOnlineStatus();
+            }
+        });
+    </script>
+</body>
+</html>

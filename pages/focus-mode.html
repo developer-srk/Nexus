@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focus Mode - FocusZone</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --text-primary: #1a1a1a;
+            --text-muted: #6b7280;
+            --radius-xl: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 200px;
+            height: 200px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .orb-3 {
+            width: 150px;
+            height: 150px;
+            bottom: 20%;
+            left: 30%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(10px) rotate(240deg); }
+        }
+
+        .premium-navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-container a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* ===== FOCUS MODE SPECIFIC STYLES ===== */
+        .focus-container {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .timer-display {
+            font-size: 4rem;
+            font-weight: 800;
+            color: white;
+            margin: 2rem 0;
+            font-family: 'Inter', monospace;
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .focus-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .timer-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--radius-xl);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 140px;
+            justify-content: center;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #10b981, #34d399);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .pause-btn {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            color: white;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .stop-btn {
+            background: linear-gradient(135deg, #ef4444, #f87171);
+            color: white;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .timer-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .timer-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ===== ANIMATION SELECTION ===== */
+        .animation-selector {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .animation-selector h3 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .animation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .animation-option {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 1.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+
+        .animation-option:hover {
+            border-color: rgba(102, 126, 234, 0.8);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .animation-option.active {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.3);
+            transform: scale(1.05);
+        }
+
+        .animation-option .icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .animation-option h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.3rem;
+        }
+
+        .animation-option p {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0;
+        }
+
+        /* ===== ANIMATION DISPLAY ===== */
+        .animation-display {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== PROGRESS RING ===== */
+        .progress-ring {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+        }
+
+        .progress-ring-circle {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.2);
+            stroke-width: 6;
+        }
+
+        .progress-ring-progress {
+            fill: none;
+            stroke: #ffffff;
+            stroke-width: 6;
+            stroke-linecap: round;
+            stroke-dasharray: 226;
+            stroke-dashoffset: 226;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke-dashoffset 0.5s ease-out;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        /* ===== TREE ANIMATION ===== */
+        .tree-animation {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .tree-trunk {
+            width: 25px;
+            height: 0px;
+            background: linear-gradient(to bottom, #8B4513, #A0522D);
+            margin: 0 auto;
+            border-radius: 12px;
+            transition: height 1s ease-out;
+            box-shadow: 0 2px 10px rgba(139, 69, 19, 0.5);
+        }
+
+        .tree-crown {
+            width: 0px;
+            height: 0px;
+            background: radial-gradient(circle, #32CD32, #228B22);
+            border-radius: 50%;
+            margin: -15px auto 0;
+            transition: all 1s ease-out;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(34, 139, 34, 0.5);
+        }
+
+        .tree-leaves {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, #90EE90, #32CD32);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+            animation: leafFloat 3s ease-in-out infinite;
+        }
+
+        .tree-leaves:nth-child(1) { top: -8px; left: -12px; animation-delay: 0s; }
+        .tree-leaves:nth-child(2) { top: 8px; right: -10px; animation-delay: 0.5s; }
+        .tree-leaves:nth-child(3) { bottom: -8px; left: 8px; animation-delay: 1s; }
+        .tree-leaves:nth-child(4) { bottom: 8px; right: 8px; animation-delay: 1.5s; }
+        .tree-leaves:nth-child(5) { top: 5px; left: 5px; animation-delay: 2s; }
+
+        /* ===== CAR ANIMATION ===== */
+        .car-animation {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .car-body {
+            width: 0px;
+            height: 50px;
+            background: linear-gradient(135deg, #FF4444, #FF6B6B);
+            border-radius: 25px;
+            transition: width 1s ease-out;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(255, 68, 68, 0.5);
+        }
+
+        .car-wheels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: -15px;
+            padding: 0 10px;
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .wheel {
+            width: 25px;
+            height: 25px;
+            background: radial-gradient(circle, #333, #111);
+            border-radius: 50%;
+            border: 2px solid #666;
+            position: relative;
+        }
+
+        .wheel::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: #999;
+            border-radius: 50%;
+        }
+
+        .car-details {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            height: 20px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.3));
+            border-radius: 10px;
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .wheel.spinning {
+            animation: rotate 1s linear infinite;
+        }
+
+        /* ===== ROCKET ANIMATION ===== */
+        .rocket-animation {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .rocket-body {
+            width: 50px;
+            height: 0px;
+            background: linear-gradient(to bottom, #FF6B6B, #4ECDC4);
+            border-radius: 25px 25px 8px 8px;
+            transition: height 1s ease-out;
+            position: relative;
+            margin: 0 auto;
+            box-shadow: 0 4px 20px rgba(255, 107, 107, 0.5);
+        }
+
+        .rocket-flames {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 25px;
+            height: 0px;
+            background: linear-gradient(to bottom, #FFD700, #FF4500);
+            border-radius: 0 0 50% 50%;
+            transition: height 0.5s ease-out;
+            box-shadow: 0 2px 15px rgba(255, 69, 0, 0.7);
+        }
+
+        .rocket-window {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #87CEEB, #4682B4);
+            border-radius: 50%;
+            border: 2px solid #2F4F4F;
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .rocket-stars {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #FFD700;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle 2s ease-in-out infinite;
+            box-shadow: 0 0 10px #FFD700;
+        }
+
+        /* ===== HOUSE ANIMATION ===== */
+        .house-animation {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .house-foundation {
+            width: 120px;
+            height: 0px;
+            background: linear-gradient(to bottom, #8B4513, #A0522D);
+            transition: height 1s ease-out;
+            margin: 0 auto;
+            box-shadow: 0 2px 10px rgba(139, 69, 19, 0.5);
+        }
+
+        .house-walls {
+            width: 120px;
+            height: 0px;
+            background: linear-gradient(135deg, #DEB887, #D2B48C);
+            transition: height 1s ease-out;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: 0 2px 15px rgba(222, 184, 135, 0.5);
+        }
+
+        .house-roof {
+            width: 0px;
+            height: 0px;
+            border-left: 0px solid transparent;
+            border-right: 0px solid transparent;
+            border-bottom: 0px solid #8B0000;
+            margin: 0 auto;
+            transition: all 1s ease-out;
+            filter: drop-shadow(0 2px 10px rgba(139, 0, 0, 0.5));
+        }
+
+        .house-door {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0px;
+            height: 0px;
+            background: linear-gradient(to bottom, #654321, #4A3018);
+            border-radius: 15px 15px 0 0;
+            transition: all 0.5s ease-out;
+        }
+
+        .house-windows {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-around;
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .window {
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #87CEEB, #4682B4);
+            border: 3px solid #654321;
+            border-radius: 3px;
+            position: relative;
+        }
+
+        .window::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #654321;
+            transform: translateY(-50%);
+        }
+
+        .window::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background: #654321;
+            transform: translateX(-50%);
+        }
+
+        /* ===== FLOWER ANIMATION ===== */
+        .flower-animation {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .flower-stem {
+            width: 8px;
+            height: 0px;
+            background: linear-gradient(to bottom, #228B22, #006400);
+            margin: 0 auto;
+            transition: height 1s ease-out;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(34, 139, 34, 0.5);
+        }
+
+        .flower-bloom {
+            width: 0px;
+            height: 0px;
+            background: radial-gradient(circle, #FF69B4, #FF1493);
+            border-radius: 50%;
+            margin: -10px auto 0;
+            transition: all 1s ease-out;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(255, 105, 180, 0.5);
+        }
+
+        .flower-petals {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .petal {
+            position: absolute;
+            width: 15px;
+            height: 25px;
+            background: radial-gradient(ellipse, #FFB6C1, #FF69B4);
+            border-radius: 50% 10px 50% 10px;
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+            transform-origin: bottom center;
+        }
+
+        .petal:nth-child(1) { transform: rotate(0deg) translateY(-25px); }
+        .petal:nth-child(2) { transform: rotate(60deg) translateY(-25px); }
+        .petal:nth-child(3) { transform: rotate(120deg) translateY(-25px); }
+        .petal:nth-child(4) { transform: rotate(180deg) translateY(-25px); }
+        .petal:nth-child(5) { transform: rotate(240deg) translateY(-25px); }
+        .petal:nth-child(6) { transform: rotate(300deg) translateY(-25px); }
+
+        /* ===== SESSION STATS ===== */
+        .session-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes leafFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 53%, 80%, 100% { transform: translateY(0); }
+            40%, 43% { transform: translateY(-20px); }
+            70% { transform: translateY(-10px); }
+            90% { transform: translateY(-5px); }
+        }
+
+        @keyframes celebrate {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .timer-display {
+                font-size: 2.5rem;
+            }
+            
+            .animation-display {
+                height: 300px;
+            }
+            
+            .focus-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .timer-btn {
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .animation-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .animation-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .session-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-background">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+
+    <nav class="premium-navbar">
+        <div class="nav-container">
+            <a href="#" style="text-decoration: none; color: white; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+            <div class="nav-actions">
+                <span style="color: white;">🌙 Dark Mode</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container page-content">
+        <div class="page-header">
+            <h1>🎯 Focus Mode</h1>
+            <p>Enter deep focus with beautiful growth animations and the Pomodoro technique</p>
+        </div>
+
+        <div class="focus-container">
+            <!-- Timer Display -->
+            <div class="timer-display" id="timerDisplay">25:00</div>
+
+            <!-- Animation Selection -->
+            <div class="animation-selector">
+                <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Choose Your Focus Animation</h3>
+                <div class="animation-grid">
+                    <div class="animation-option active" data-animation="tree">
+                        <span class="icon">🌳</span>
+                        <h4>Growing Tree</h4>
+                        <p>Watch a tree grow as you focus</p>
+                    </div>
+                    <div class="animation-option" data-animation="car">
+                        <span class="icon">🚗</span>
+                        <h4>Building Car</h4>
+                        <p>Build a car piece by piece</p>
+                    </div>
+                    <div class="animation-option" data-animation="rocket">
+                        <span class="icon">🚀</span>
+                        <h4>Rocket Launch</h4>
+                        <p>Launch a rocket to space</p>
+                    </div>
+                    <div class="animation-option" data-animation="house">
+                        <span class="icon">🏠</span>
+                        <h4>Building House</h4>
+                        <p>Construct a house step by step</p>
+                    </div>
+                    <div class="animation-option" data-animation="flower">
+                        <span class="icon">🌸</span>
+                        <h4>Blooming Flower</h4>
+                        <p>Watch a flower bloom beautifully</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Animation Display Area -->
+            <div class="animation-display" id="animationDisplay">
+                <!-- Progress Ring -->
+                <svg class="progress-ring">
+                    <circle class="progress-ring-circle" cx="40" cy="40" r="36"></circle>
+                    <circle class="progress-ring-progress" cx="40" cy="40" r="36" id="progressCircle"></circle>
+                </svg>
+                <div class="progress-text" id="progressText">0%</div>
+
+                <!-- Tree Animation -->
+                <div class="tree-animation" id="treeAnimation" style="display: block;">
+                    <div class="tree-crown" id="treeCrown">
+                        <div class="tree-leaves"></div>
+                        <div class="tree-leaves"></div>
+                        <div class="tree-leaves"></div>
+                        <div class="tree-leaves"></div>
+                        <div class="tree-leaves"></div>
+                    </div>
+                    <div class="tree-trunk" id="treeTrunk"></div>
+                </div>
+
+                <!-- Car Animation -->
+                <div class="car-animation" id="carAnimation" style="display: none;">
+                    <div class="car-body" id="carBody">
+                        <div class="car-details" id="carDetails"></div>
+                    </div>
+                    <div class="car-wheels" id="carWheels">
+                        <div class="wheel" id="leftWheel"></div>
+                        <div class="wheel" id="rightWheel"></div>
+                    </div>
+                </div>
+
+                <!-- Rocket Animation -->
+                <div class="rocket-animation" id="rocketAnimation" style="display: none;">
+                    <div class="rocket-body" id="rocketBody">
+                        <div class="rocket-window" id="rocketWindow"></div>
+                    </div>
+                    <div class="rocket-flames" id="rocketFlames"></div>
+                    <div class="rocket-stars" style="top: 60px; left: -40px; animation-delay: 0s;"></div>
+                    <div class="rocket-stars" style="top: 100px; right: -30px; animation-delay: 0.7s;"></div>
+                    <div class="rocket-stars" style="top: 40px; right: -50px; animation-delay: 1.4s;"></div>
+                    <div class="rocket-stars" style="top: 120px; left: -60px; animation-delay: 2.1s;"></div>
+                </div>
+
+                <!-- House Animation -->
+                <div class="house-animation" id="houseAnimation" style="display: none;">
+                    <div class="house-roof" id="houseRoof"></div>
+                    <div class="house-walls" id="houseWalls">
+                        <div class="house-windows" id="houseWindows">
+                            <div class="window"></div>
+                            <div class="window"></div>
+                        </div>
+                        <div class="house-door" id="houseDoor"></div>
+                    </div>
+                    <div class="house-foundation" id="houseFoundation"></div>
+                </div>
+
+                <!-- Flower Animation -->
+                <div class="flower-animation" id="flowerAnimation" style="display: none;">
+                    <div class="flower-bloom" id="flowerBloom">
+                        <div class="flower-petals">
+                            <div class="petal"></div>
+                            <div class="petal"></div>
+                            <div class="petal"></div>
+                            <div class="petal"></div>
+                            <div class="petal"></div>
+                            <div class="petal"></div>
+                        </div>
+                    </div>
+                    <div class="flower-stem" id="flowerStem"></div>
+                </div>
+            </div>
+
+            <!-- Control Buttons -->
+            <div class="focus-controls">
+                <button class="timer-btn start-btn" id="startBtn">
+                    <i class="fas fa-play"></i>
+                    Start Focus
+                </button>
+                <button class="timer-btn pause-btn" id="pauseBtn" disabled>
+                    <i class="fas fa-pause"></i>
+                    Pause
+                </button>
+                <button class="timer-btn stop-btn" id="stopBtn" disabled>
+                    <i class="fas fa-stop"></i>
+                    Stop
+                </button>
+            </div>
+
+            <!-- Session Stats -->
+            <div class="session-stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="sessionCount">0</div>
+                    <div class="stat-label">Sessions Today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalMinutes">0</div>
+                    <div class="stat-label">Minutes Focused</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="streakDays">0</div>
+                    <div class="stat-label">Day Streak</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="xpPoints">0</div>
+                    <div class="stat-label">XP Earned</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // ===== FOCUS MODE CONTROLLER =====
+        class FocusMode {
+            constructor() {
+                this.minutes = 25;
+                this.seconds = 0;
+                this.totalSeconds = 25 * 60;
+                this.remainingSeconds = this.totalSeconds;
+                this.isRunning = false;
+                this.isPaused = false;
+                this.timer = null;
+                this.currentAnimation = 'tree';
+                
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.loadStats();
+                this.updateDisplay();
+                this.setupAnimationSelection();
+                this.resetAnimation();
+            }
+
+            bindEvents() {
+                document.getElementById('startBtn').addEventListener('click', () => this.start());
+                document.getElementById('pauseBtn').addEventListener('click', () => this.pause());
+                document.getElementById('stopBtn').addEventListener('click', () => this.stop());
+                
+                document.addEventListener('keydown', (e) => {
+                    if (e.code === 'Space' && !this.isRunning) {
+                        e.preventDefault();
+                        this.start();
+                    }
+                });
+            }
+
+            setupAnimationSelection() {
+                const options = document.querySelectorAll('.animation-option');
+                options.forEach(option => {
+                    option.addEventListener('click', () => {
+                        options.forEach(opt => opt.classList.remove('active'));
+                        option.classList.add('active');
+                        this.currentAnimation = option.getAttribute('data-animation');
+                        this.switchAnimation();
+                    });
+                });
+            }
+
+            switchAnimation() {
+                // Hide all animations
+                document.querySelectorAll('[id$="Animation"]').forEach(el => {
+                    el.style.display = 'none';
+                });
+                
+                // Show selected animation
+                const animationEl = document.getElementById(this.currentAnimation + 'Animation');
+                if (animationEl) {
+                    animationEl.style.display = 'block';
+                }
+                
+                // Reset animation state
+                this.resetAnimation();
+            }
+
+            start() {
+                if (this.isPaused) {
+                    this.isPaused = false;
+                    this.isRunning = true;
+                } else {
+                    this.isRunning = true;
+                    this.remainingSeconds = this.totalSeconds;
+                }
+                
+                document.getElementById('startBtn').disabled = true;
+                document.getElementById('pauseBtn').disabled = false;
+                document.getElementById('stopBtn').disabled = false;
+                
+                this.timer = setInterval(() => {
+                    this.tick();
+                }, 1000);
+                
+                this.showNotification('Focus session started! 🎯', 'success');
+            }
+
+            pause() {
+                this.isPaused = true;
+                this.isRunning = false;
+                clearInterval(this.timer);
+                
+                document.getElementById('startBtn').disabled = false;
+                document.getElementById('pauseBtn').disabled = true;
+                
+                const startBtn = document.getElementById('startBtn');
+                startBtn.innerHTML = '<i class="fas fa-play"></i> Resume';
+                
+                this.showNotification('Focus session paused', 'warning');
+            }
+
+            stop() {
+                this.isRunning = false;
+                this.isPaused = false;
+                clearInterval(this.timer);
+                
+                document.getElementById('startBtn').disabled = false;
+                document.getElementById('pauseBtn').disabled = true;
+                document.getElementById('stopBtn').disabled = true;
+                
+                const startBtn = document.getElementById('startBtn');
+                startBtn.innerHTML = '<i class="fas fa-play"></i> Start Focus';
+                
+                this.remainingSeconds = this.totalSeconds;
+                this.updateDisplay();
+                this.resetAnimation();
+                this.updateProgress();
+                
+                this.showNotification('Focus session stopped', 'info');
+            }
+
+            tick() {
+                this.remainingSeconds--;
+                this.updateDisplay();
+                this.updateProgress();
+                this.updateAnimation();
+                
+                if (this.remainingSeconds <= 0) {
+                    this.complete();
+                }
+            }
+
+            complete() {
+                this.stop();
+                this.updateStats();
+                this.completeAnimation();
+                this.playCompletionSound();
+                this.showNotification('🎉 Focus session complete! Well done!', 'success');
+                this.addCelebrationEffect();
+            }
+
+            updateDisplay() {
+                const minutes = Math.floor(this.remainingSeconds / 60);
+                const seconds = this.remainingSeconds % 60;
+                const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                document.getElementById('timerDisplay').textContent = display;
+                document.title = `${display} - Focus Mode`;
+            }
+
+            updateProgress() {
+                const progress = ((this.totalSeconds - this.remainingSeconds) / this.totalSeconds) * 100;
+                const circumference = 2 * Math.PI * 36;
+                const offset = circumference - (progress / 100) * circumference;
+                
+                const progressCircle = document.getElementById('progressCircle');
+                const progressText = document.getElementById('progressText');
+                
+                if (progressCircle) {
+                    progressCircle.style.strokeDashoffset = offset;
+                }
+                
+                if (progressText) {
+                    progressText.textContent = Math.round(progress) + '%';
+                }
+            }
+
+            updateAnimation() {
+                const progress = (this.totalSeconds - this.remainingSeconds) / this.totalSeconds;
+                
+                switch (this.currentAnimation) {
+                    case 'tree':
+                        this.updateTreeAnimation(progress);
+                        break;
+                    case 'car':
+                        this.updateCarAnimation(progress);
+                        break;
+                    case 'rocket':
+                        this.updateRocketAnimation(progress);
+                        break;
+                    case 'house':
+                        this.updateHouseAnimation(progress);
+                        break;
+                    case 'flower':
+                        this.updateFlowerAnimation(progress);
+                        break;
+                }
+            }
+
+            updateTreeAnimation(progress) {
+                const trunk = document.getElementById('treeTrunk');
+                const crown = document.getElementById('treeCrown');
+                const leaves = document.querySelectorAll('#treeAnimation .tree-leaves');
+                
+                if (progress <= 0.4) {
+                    trunk.style.height = (progress / 0.4 * 100) + 'px';
+                }
+                
+                if (progress > 0.4 && progress <= 0.8) {
+                    const crownProgress = (progress - 0.4) / 0.4;
+                    crown.style.width = (crownProgress * 120) + 'px';
+                    crown.style.height = (crownProgress * 80) + 'px';
+                }
+                
+                if (progress > 0.8) {
+                    leaves.forEach((leaf, index) => {
+                        setTimeout(() => {
+                            leaf.style.opacity = '1';
+                        }, index * 150);
+                    });
+                }
+            }
+
+            updateCarAnimation(progress) {
+                const body = document.getElementById('carBody');
+                const wheels = document.getElementById('carWheels');
+                const details = document.getElementById('carDetails');
+                const leftWheel = document.getElementById('leftWheel');
+                const rightWheel = document.getElementById('rightWheel');
+                
+                if (progress <= 0.6) {
+                    body.style.width = (progress / 0.6 * 140) + 'px';
+                }
+                
+                if (progress > 0.6 && progress <= 0.8) {
+                    wheels.style.opacity = '1';
+                }
+                
+                if (progress > 0.8) {
+                    details.style.opacity = '1';
+                    leftWheel.classList.add('spinning');
+                    rightWheel.classList.add('spinning');
+                }
+            }
+
+            updateRocketAnimation(progress) {
+                const body = document.getElementById('rocketBody');
+                const flames = document.getElementById('rocketFlames');
+                const window = document.getElementById('rocketWindow');
+                const stars = document.querySelectorAll('#rocketAnimation .rocket-stars');
+                
+                if (progress <= 0.5) {
+                    body.style.height = (progress / 0.5 * 120) + 'px';
+                }
+                
+                if (progress > 0.5 && progress <= 0.6) {
+                    window.style.opacity = '1';
+                }
+                
+                if (progress > 0.6 && progress <= 0.8) {
+                    const flameProgress = (progress - 0.6) / 0.2;
+                    flames.style.height = (flameProgress * 30) + 'px';
+                }
+                
+                if (progress > 0.8) {
+                    stars.forEach(star => {
+                        star.style.opacity = '1';
+                    });
+                }
+            }
+
+            updateHouseAnimation(progress) {
+                const foundation = document.getElementById('houseFoundation');
+                const walls = document.getElementById('houseWalls');
+                const roof = document.getElementById('houseRoof');
+                const door = document.getElementById('houseDoor');
+                const windows = document.getElementById('houseWindows');
+                
+                if (progress <= 0.2) {
+                    foundation.style.height = (progress / 0.2 * 15) + 'px';
+                }
+                
+                if (progress > 0.2 && progress <= 0.6) {
+                    const wallProgress = (progress - 0.2) / 0.4;
+                    walls.style.height = (wallProgress * 80) + 'px';
+                }
+                
+                if (progress > 0.6 && progress <= 0.8) {
+                    const roofProgress = (progress - 0.6) / 0.2;
+                    roof.style.borderLeftWidth = (roofProgress * 70) + 'px';
+                    roof.style.borderRightWidth = (roofProgress * 70) + 'px';
+                    roof.style.borderBottomWidth = (roofProgress * 50) + 'px';
+                }
+                
+                if (progress > 0.8 && progress <= 0.9) {
+                    const doorProgress = (progress - 0.8) / 0.1;
+                    door.style.width = (doorProgress * 25) + 'px';
+                    door.style.height = (doorProgress * 45) + 'px';
+                }
+                
+                if (progress > 0.9) {
+                    windows.style.opacity = '1';
+                }
+            }
+
+            updateFlowerAnimation(progress) {
+                const stem = document.getElementById('flowerStem');
+                const bloom = document.getElementById('flowerBloom');
+                const petals = document.querySelectorAll('#flowerAnimation .petal');
+                
+                if (progress <= 0.6) {
+                    stem.style.height = (progress / 0.6 * 80) + 'px';
+                }
+                
+                if (progress > 0.6 && progress <= 0.8) {
+                    const bloomProgress = (progress - 0.6) / 0.2;
+                    bloom.style.width = (bloomProgress * 40) + 'px';
+                    bloom.style.height = (bloomProgress * 40) + 'px';
+                }
+                
+                if (progress > 0.8) {
+                    petals.forEach((petal, index) => {
+                        setTimeout(() => {
+                            petal.style.opacity = '1';
+                        }, index * 100);
+                    });
+                }
+            }
+
+            resetAnimation() {
+                // Reset all elements to zero state
+                const resetElements = {
+                    'treeTrunk': { height: '0px' },
+                    'treeCrown': { width: '0px', height: '0px' },
+                    'carBody': { width: '0px' },
+                    'carWheels': { opacity: '0' },
+                    'carDetails': { opacity: '0' },
+                    'rocketBody': { height: '0px' },
+                    'rocketFlames': { height: '0px' },
+                    'rocketWindow': { opacity: '0' },
+                    'houseFoundation': { height: '0px' },
+                    'houseWalls': { height: '0px' },
+                    'houseRoof': { 
+                        borderLeftWidth: '0px',
+                        borderRightWidth: '0px', 
+                        borderBottomWidth: '0px'
+                    },
+                    'houseDoor': { width: '0px', height: '0px' },
+                    'houseWindows': { opacity: '0' },
+                    'flowerStem': { height: '0px' },
+                    'flowerBloom': { width: '0px', height: '0px' }
+                };
+                
+                Object.keys(resetElements).forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        Object.assign(element.style, resetElements[id]);
+                    }
+                });
+                
+                // Reset leaves, petals, and stars
+                document.querySelectorAll('.tree-leaves, .petal, .rocket-stars').forEach(el => {
+                    el.style.opacity = '0';
+                });
+                
+                // Remove spinning animation
+                document.querySelectorAll('.wheel').forEach(wheel => {
+                    wheel.classList.remove('spinning');
+                });
+            }
+
+            completeAnimation() {
+                const currentAnimationEl = document.getElementById(this.currentAnimation + 'Animation');
+                if (currentAnimationEl) {
+                    currentAnimationEl.style.filter = 'brightness(1.3) saturate(1.2)';
+                    currentAnimationEl.style.animation = 'bounce 2s ease-in-out 3';
+                    
+                    setTimeout(() => {
+                        currentAnimationEl.style.filter = '';
+                        currentAnimationEl.style.animation = '';
+                    }, 6000);
+                }
+            }
+
+            addCelebrationEffect() {
+                for (let i = 0; i < 20; i++) {
+                    const particle = document.createElement('div');
+                    particle.style.cssText = `
+                        position: fixed;
+                        top: 50%;
+                        left: 50%;
+                        width: 10px;
+                        height: 10px;
+                        background: hsl(${Math.random() * 360}, 70%, 60%);
+                        border-radius: 50%;
+                        pointer-events: none;
+                        z-index: 9999;
+                        animation: celebrate 3s ease-out forwards;
+                        animation-delay: ${Math.random() * 0.5}s;
+                    `;
+                    
+                    const angle = (Math.PI * 2 * i) / 20;
+                    const velocity = 200 + Math.random() * 100;
+                    particle.style.setProperty('--dx', Math.cos(angle) * velocity + 'px');
+                    particle.style.setProperty('--dy', Math.sin(angle) * velocity + 'px');
+                    
+                    document.body.appendChild(particle);
+                    
+                    setTimeout(() => particle.remove(), 3000);
+                }
+            }
+
+            playCompletionSound() {
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    
+                    oscillator.connect(gain);
+                    gain.connect(audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
+                    oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
+                    
+                    gain.gain.setValueAtTime(0.1, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.5);
+                } catch (e) {
+                    console.log('Completion sound played');
+                }
+            }
+
+            loadStats() {
+                try {
+                    const stats = JSON.parse(localStorage.getItem('focusStats') || '{}');
+                    document.getElementById('sessionCount').textContent = stats.sessionCount || 0;
+                    document.getElementById('totalMinutes').textContent = stats.totalMinutes || 0;
+                    document.getElementById('streakDays').textContent = stats.streakDays || 0;
+                    document.getElementById('xpPoints').textContent = stats.xpPoints || 0;
+                } catch (e) {
+                    // Fallback if localStorage is not available
+                    document.getElementById('sessionCount').textContent = 0;
+                    document.getElementById('totalMinutes').textContent = 0;
+                    document.getElementById('streakDays').textContent = 0;
+                    document.getElementById('xpPoints').textContent = 0;
+                }
+            }
+
+            updateStats() {
+                try {
+                    const stats = JSON.parse(localStorage.getItem('focusStats') || '{}');
+                    
+                    const completedMinutes = Math.ceil((this.totalSeconds - this.remainingSeconds) / 60);
+                    
+                    stats.sessionCount = (stats.sessionCount || 0) + 1;
+                    stats.totalMinutes = (stats.totalMinutes || 0) + completedMinutes;
+                    stats.xpPoints = (stats.xpPoints || 0) + (completedMinutes * 10);
+                    
+                    const today = new Date().toDateString();
+                    const lastSession = stats.lastSessionDate;
+                    if (lastSession !== today) {
+                        const yesterday = new Date();
+                        yesterday.setDate(yesterday.getDate() - 1);
+                        
+                        if (lastSession === yesterday.toDateString()) {
+                            stats.streakDays = (stats.streakDays || 0) + 1;
+                        } else {
+                            stats.streakDays = 1;
+                        }
+                        stats.lastSessionDate = today;
+                    }
+                    
+                    localStorage.setItem('focusStats', JSON.stringify(stats));
+                    this.loadStats();
+                } catch (e) {
+                    // Stats won't persist if localStorage is not available
+                    console.log('Stats not saved - localStorage not available');
+                }
+            }
+
+            showNotification(message, type = 'success') {
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: ${type === 'success' ? 'linear-gradient(135deg, #10b981, #34d399)' : 
+                                type === 'warning' ? 'linear-gradient(135deg, #f59e0b, #fbbf24)' : 
+                                'linear-gradient(135deg, #3b82f6, #60a5fa)'};
+                    color: white;
+                    padding: 1rem 1.5rem;
+                    border-radius: 10px;
+                    font-weight: 600;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+                    z-index: 10000;
+                    transform: translateX(100%);
+                    transition: transform 0.3s ease;
+                    max-width: 300px;
+                `;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(0)';
+                }, 100);
+                
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(() => notification.remove(), 300);
+                }, 4000);
+            }
+        }
+
+        // Initialize Focus Mode when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            window.focusMode = new FocusMode();
+        });
+    </script>
+</body>
+</html>

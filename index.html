@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusZone - Premium Productivity Suite</title>
+    <link rel="stylesheet" href="css/premium-styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Animated Luxury Background -->
+    <div class="animated-background">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+        <div class="floating-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+    </div>
+
+    <!-- Premium Navigation -->
+    <nav class="premium-navbar">
+        <div class="nav-container">
+            <div class="logo-container" onclick="scrollToSection('hero')">
+                <div class="logo-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="logo-text">
+                    <h2>FocusZone</h2>
+                    <span class="logo-subtitle">Premium</span>
+                </div>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="#company" class="nav-link" onclick="scrollToSection('company')">
+                    <span>Company</span>
+                    <div class="nav-underline"></div>
+                </a>
+                <a href="#service" class="nav-link" onclick="scrollToSection('service')">
+                    <span>Service</span>
+                    <div class="nav-underline"></div>
+                </a>
+                <a href="#about" class="nav-link" onclick="scrollToSection('about')">
+                    <span>About Us</span>
+                    <div class="nav-underline"></div>
+                </a>
+                <a href="#contact" class="nav-link" onclick="scrollToSection('contact')">
+                    <span>Contact</span>
+                    <div class="nav-underline"></div>
+                </a>
+            </div>
+            
+            <div class="nav-actions">
+                <div class="theme-switcher">
+                    <div class="theme-icon sun-icon">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <div class="theme-toggle">
+                        <input type="checkbox" id="theme-checkbox">
+                        <label for="theme-checkbox" class="theme-slider"></label>
+                    </div>
+                    <div class="theme-icon moon-icon">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                </div>
+                
+                <button class="btn-glass btn-login" onclick="openModal('loginModal')">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </button>
+                <button class="btn-premium btn-register" onclick="openModal('registerModal')">
+                    <i class="fas fa-rocket"></i>
+                    <span>Register</span>
+                    <div class="btn-glow"></div>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-premium">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge animate-fadeInUp">
+                    <i class="fas fa-star"></i>
+                    <span>AI-Powered Productivity</span>
+                </div>
+                
+                <h1 class="hero-title animate-fadeInUp">
+                    <span class="title-gradient">Transform Your Focus</span>
+                    <br>Into
+                    <span class="title-highlight">Extraordinary Results</span>
+                </h1>
+                
+                <p class="hero-description animate-fadeInUp">
+                    Experience the future of productivity with our intelligent cross-device synchronization, 
+                    gamified learning system, and AI-powered doubt resolution that adapts to your unique workflow.
+                </p>
+                
+                <div class="hero-stats animate-fadeInUp">
+                    <div class="stat-item">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">Focus Improvement</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">50K+</div>
+                        <div class="stat-label">Active Users</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">4.9★</div>
+                        <div class="stat-label">User Rating</div>
+                    </div>
+                </div>
+                
+                <div class="hero-actions animate-fadeInUp">
+                    <button class="btn-hero-primary" onclick="navigateTo('pages/focus-mode.html')">
+                        <div class="btn-content">
+                            <i class="fas fa-play"></i>
+                            <span>Start Focus Session</span>
+                        </div>
+                        <div class="btn-shine"></div>
+                    </button>
+                    
+                    <button class="btn-hero-secondary" onclick="scrollToSection('service')">
+                        <i class="fas fa-star"></i>
+                        <span>Explore Services</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="hero-visual animate-fadeInRight">
+                <div class="dashboard-preview">
+                    <div class="preview-header">
+                        <div class="preview-controls">
+                            <div class="control red"></div>
+                            <div class="control yellow"></div>
+                            <div class="control green"></div>
+                        </div>
+                        <div class="preview-title">FocusZone Dashboard</div>
+                    </div>
+                    
+                    <div class="preview-content">
+                        <div class="timer-preview">
+                            <div class="timer-ring">
+                                <div class="timer-progress animate-rotate"></div>
+                                <div class="timer-center">
+                                    <span class="timer-text">25:00</span>
+                                    <span class="timer-label">Focus Time</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stats-preview">
+                            <div class="stat-card hover-lift">
+                                <i class="fas fa-fire animate-flicker"></i>
+                                <div class="stat-info">
+                                    <span class="stat-value">12</span>
+                                    <span class="stat-name">Day Streak</span>
+                                </div>
+                            </div>
+                            <div class="stat-card hover-lift">
+                                <i class="fas fa-trophy animate-glow"></i>
+                                <div class="stat-info">
+                                    <span class="stat-value">847</span>
+                                    <span class="stat-name">XP Points</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Company Section -->
+    <section id="company" class="company-section premium-section">
+        <div class="container">
+            <div class="section-header animate-fadeInUp">
+                <h2 class="section-title">
+                    <span class="title-gradient">Our Company</span>
+                </h2>
+                <p class="section-subtitle">Pioneering the future of productivity and human potential</p>
+            </div>
+
+            <div class="company-content">
+                <div class="company-story animate-fadeInLeft">
+                    <div class="story-card premium-card">
+                        <div class="story-icon">
+                            <i class="fas fa-lightbulb animate-glow"></i>
+                        </div>
+                        <h3>Our Vision</h3>
+                        <p>To create a world where every individual can achieve their maximum potential through intelligent productivity tools and seamless technology integration.</p>
+                    </div>
+                </div>
+
+                <div class="company-mission animate-fadeInUp">
+                    <div class="mission-card premium-card">
+                        <div class="mission-icon">
+                            <i class="fas fa-rocket animate-bounce"></i>
+                        </div>
+                        <h3>Our Mission</h3>
+                        <p>We empower millions of users worldwide with AI-driven productivity solutions that adapt to their unique workflows and learning styles.</p>
+                    </div>
+                </div>
+
+                <div class="company-values animate-fadeInRight">
+                    <div class="values-card premium-card">
+                        <div class="values-icon">
+                            <i class="fas fa-heart animate-pulse"></i>
+                        </div>
+                        <h3>Our Values</h3>
+                        <p>Innovation, user-centricity, privacy, and continuous improvement drive everything we do. We believe in technology that serves humanity.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="company-stats animate-fadeInUp">
+                <div class="stat-card-large hover-lift">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number" data-target="500000">0</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+
+                <div class="stat-card-large hover-lift">
+                    <div class="stat-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <div class="stat-number" data-target="85">0</div>
+                    <div class="stat-label">Countries</div>
+                </div>
+
+                <div class="stat-card-large hover-lift">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-number" data-target="10000000">0</div>
+                    <div class="stat-label">Focus Hours</div>
+                </div>
+
+                <div class="stat-card-large hover-lift">
+                    <div class="stat-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <div class="stat-number" data-target="15">0</div>
+                    <div class="stat-label">Awards Won</div>
+                </div>
+            </div>
+
+            <div class="company-timeline animate-fadeInUp">
+                <h3 class="timeline-title">Our Journey</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h4>2019 - The Beginning</h4>
+                            <p>Founded by a team of productivity enthusiasts and AI researchers</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h4>2020 - First Million</h4>
+                            <p>Reached 1 million downloads with our revolutionary focus timer</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h4>2022 - AI Integration</h4>
+                            <p>Launched AI-powered doubt solver and personalized insights</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h4>2024 - Global Expansion</h4>
+                            <p>Expanded to 85 countries with localized experiences</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Section -->
+    <section id="service" class="service-section premium-section">
+        <div class="container">
+            <div class="section-header animate-fadeInUp">
+                <h2 class="section-title">
+                    <span class="title-gradient">Our Services</span>
+                </h2>
+                <p class="section-subtitle">Comprehensive productivity solutions tailored for your success</p>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-card premium-card animate-fadeInUp hover-lift" onclick="navigateTo('pages/focus-mode.html')">
+                    <div class="service-icon">
+                        <i class="fas fa-bullseye animate-rotate"></i>
+                    </div>
+                    <h3>Focus Mode Pro</h3>
+                    <p>Advanced Pomodoro technique with AI insights, beautiful animations, and cross-device sync</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> 25-minute optimized sessions</li>
+                        <li><i class="fas fa-check"></i> Real-time progress tracking</li>
+                        <li><i class="fas fa-check"></i> Smart break reminders</li>
+                        <li><i class="fas fa-check"></i> Cross-platform synchronization</li>
+                    </ul>
+                    <div class="service-price">
+                        <span class="price-label">Starting at</span>
+                        <span class="price-value">$9.99/month</span>
+                    </div>
+                </div>
+
+                <div class="service-card premium-card animate-fadeInUp hover-lift" onclick="navigateTo('pages/ai-chatbot.html')">
+                    <div class="service-icon">
+                        <i class="fas fa-robot animate-pulse"></i>
+                    </div>
+                    <h3>AI Assistant Pro</h3>
+                    <p>Powered by advanced AI models including GPT-4, Claude, and Gemini for instant doubt resolution</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Multi-model AI access</li>
+                        <li><i class="fas fa-check"></i> Real-time streaming responses</li>
+                        <li><i class="fas fa-check"></i> Context-aware conversations</li>
+                        <li><i class="fas fa-check"></i> Code generation & debugging</li>
+                    </ul>
+                    <div class="service-price">
+                        <span class="price-label">Starting at</span>
+                        <span class="price-value">$19.99/month</span>
+                    </div>
+                </div>
+
+                <div class="service-card premium-card animate-fadeInUp hover-lift" onclick="navigateTo('pages/analytics.html')">
+                    <div class="service-icon">
+                        <i class="fas fa-chart-line animate-glow"></i>
+                    </div>
+                    <h3>Analytics Suite</h3>
+                    <p>Comprehensive productivity insights with advanced charts and performance tracking</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Detailed productivity metrics</li>
+                        <li><i class="fas fa-check"></i> Trend analysis & forecasting</li>
+                        <li><i class="fas fa-check"></i> Custom reporting tools</li>
+                        <li><i class="fas fa-check"></i> Team collaboration features</li>
+                    </ul>
+                    <div class="service-price">
+                        <span class="price-label">Starting at</span>
+                        <span class="price-value">$14.99/month</span>
+                    </div>
+                </div>
+
+                <div class="service-card premium-card animate-fadeInUp hover-lift" onclick="navigateTo('pages/rewards.html')">
+                    <div class="service-icon">
+                        <i class="fas fa-gem animate-bounce"></i>
+                    </div>
+                    <h3>Gamification Engine</h3>
+                    <p>Advanced reward system with achievements, XP points, and motivational challenges</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Smart achievement system</li>
+                        <li><i class="fas fa-check"></i> Personalized challenges</li>
+                        <li><i class="fas fa-check"></i> Social leaderboards</li>
+                        <li><i class="fas fa-check"></i> Reward marketplace</li>
+                    </ul>
+                    <div class="service-price">
+                        <span class="price-label">Starting at</span>
+                        <span class="price-value">$7.99/month</span>
+                    </div>
+                </div>
+
+                <div class="service-card premium-card animate-fadeInUp hover-lift" onclick="navigateTo('pages/daily-goals.html')">
+                    <div class="service-icon">
+                        <i class="fas fa-target animate-flicker"></i>
+                    </div>
+                    <h3>Smart Goals</h3>
+                    <p>AI-powered goal setting with intelligent tracking and personalized recommendations</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> AI goal suggestions</li>
+                        <li><i class="fas fa-check"></i> Progress visualization</li>
+                        <li><i class="fas fa-check"></i> Habit formation tracking</li>
+                        <li><i class="fas fa-check"></i> Success prediction models</li>
+                    </ul>
+                    <div class="service-price">
+                        <span class="price-label">Starting at</span>
+                        <span class="price-value">$12.99/month</span>
+                    </div>
+                </div>
+
+                <div class="service-card premium-card animate-fadeInUp hover-lift" onclick="navigateTo('pages/todo-voice.html')">
+                    <div class="service-icon">
+                        <i class="fas fa-microphone animate-morphShape"></i>
+                    </div>
+                    <h3>Voice Assistant</h3>
+                    <p>Smart voice-enabled task management with natural language processing</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Voice task creation</li>
+                        <li><i class="fas fa-check"></i> Smart reminders</li>
+                        <li><i class="fas fa-check"></i> Natural language queries</li>
+                        <li><i class="fas fa-check"></i> Multi-language support</li>
+                    </ul>
+                    <div class="service-price">
+                        <span class="price-label">Starting at</span>
+                        <span class="price-value">$8.99/month</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-plans animate-fadeInUp">
+                <h3 class="plans-title">Choose Your Plan</h3>
+                <div class="pricing-cards">
+                    <div class="pricing-card basic">
+                        <h4>Basic</h4>
+                        <div class="price">
+                            <span class="currency">$</span>
+                            <span class="amount">0</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <ul class="features">
+                            <li><i class="fas fa-check"></i> Basic Focus Timer</li>
+                            <li><i class="fas fa-check"></i> Simple Analytics</li>
+                            <li><i class="fas fa-check"></i> Basic Rewards</li>
+                        </ul>
+                        <button class="btn-plan">Get Started</button>
+                    </div>
+
+                    <div class="pricing-card pro featured">
+                        <div class="popular-badge">Most Popular</div>
+                        <h4>Pro</h4>
+                        <div class="price">
+                            <span class="currency">$</span>
+                            <span class="amount">29</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <ul class="features">
+                            <li><i class="fas fa-check"></i> All Basic Features</li>
+                            <li><i class="fas fa-check"></i> AI Assistant Pro</li>
+                            <li><i class="fas fa-check"></i> Advanced Analytics</li>
+                            <li><i class="fas fa-check"></i> Voice Assistant</li>
+                            <li><i class="fas fa-check"></i> Priority Support</li>
+                        </ul>
+                        <button class="btn-plan premium">Choose Pro</button>
+                    </div>
+
+                    <div class="pricing-card enterprise">
+                        <h4>Enterprise</h4>
+                        <div class="price">
+                            <span class="currency">$</span>
+                            <span class="amount">99</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <ul class="features">
+                            <li><i class="fas fa-check"></i> All Pro Features</li>
+                            <li><i class="fas fa-check"></i> Team Management</li>
+                            <li><i class="fas fa-check"></i> Custom Integrations</li>
+                            <li><i class="fas fa-check"></i> White-label Solution</li>
+                            <li><i class="fas fa-check"></i> 24/7 Dedicated Support</li>
+                        </ul>
+                        <button class="btn-plan">Contact Sales</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="about-section premium-section">
+        <div class="container">
+            <div class="section-header animate-fadeInUp">
+                <h2 class="section-title">
+                    <span class="title-gradient">About FocusZone</span>
+                </h2>
+                <p class="section-subtitle">Meet the passionate team behind your productivity transformation</p>
+            </div>
+
+            <div class="about-content">
+                <div class="about-story animate-fadeInLeft">
+                    <h3>Our Story</h3>
+                    <p>FocusZone was born from a simple observation: in our hyper-connected world, the ability to focus has become a superpower. Our founders, frustrated by their own productivity struggles, set out to create something different.</p>
+                    <p>What started as a simple Pomodoro timer has evolved into a comprehensive productivity ecosystem powered by cutting-edge AI technology. We've helped over 500,000 users across 85 countries reclaim their focus and achieve their goals.</p>
+                </div>
+
+                <div class="about-visual animate-fadeInRight">
+                    <div class="team-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-users"></i>
+                            <p>Our Amazing Team</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-section animate-fadeInUp">
+                <h3 class="team-title">Meet Our Leadership</h3>
+                <div class="team-grid">
+                    <div class="team-card hover-lift">
+                        <div class="team-avatar">
+                            <div class="avatar-placeholder">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        <h4>Developer SRK</h4>
+                        <p class="team-role">Frontend Developer, UI/UX Designer</p>
+                        <p class="team-bio">Student @ThakurPolytechnic, Intern @EliteForums & Hackathon Experience</p>
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="team-card hover-lift">
+                        <div class="team-avatar">
+                            <div class="avatar-placeholder">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        <h4>Harsh Agarwal</h4>
+                        <p class="team-role">Backend Developer</p>
+                        <p class="team-bio">Student @ThakurPolytechnic & Intern @EliteForums & Hackathon Experience</p>
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="team-card hover-lift">
+                        <div class="team-avatar">
+                            <div class="avatar-placeholder">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        <h4>Aaruf Khan</h4>
+                        <p class="team-role">Designer</p>
+                        <p class="team-bio">Student @ThakurPolytechnic & Intern @EliteForums</p>
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-dribbble"></i></a>
+                            <a href="#"><i class="fab fa-behance"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="team-card hover-lift">
+                        <div class="team-avatar">
+                            <div class="avatar-placeholder">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        <h4>Sofiya Salmani</h4>
+                        <p class="team-role">Backend Developer</p>
+                        <p class="team-bio">Student @ThakurPolytechnic & Intern @EliteForums</p>
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-card hover-lift">
+                        <div class="team-avatar">
+                            <div class="avatar-placeholder">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        <h4>Saloni Shaikh</h4>
+                        <p class="team-role">Chat Model Developer</p>
+                        <p class="team-bio">Student @ThakurPolytechnic & Intern @EliteForums</p>
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-card hover-lift">
+                        <div class="team-avatar">
+                            <div class="avatar-placeholder">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        <h4>Pranjal Parab</h4>
+                        <p class="team-role">App Blocker Developer</p>
+                        <p class="team-bio">Student @ThakurPolytechnic & Intern @EliteForums</p>
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="values-section animate-fadeInUp">
+                <h3 class="values-title">What Drives Us</h3>
+                <div class="values-grid">
+                    <div class="value-card premium-card">
+                        <div class="value-icon">
+                            <i class="fas fa-innovation animate-bounce"></i>
+                        </div>
+                        <h4>Innovation First</h4>
+                        <p>We're constantly pushing the boundaries of what's possible in productivity technology.</p>
+                    </div>
+
+                    <div class="value-card premium-card">
+                        <div class="value-icon">
+                            <i class="fas fa-shield-alt animate-pulse"></i>
+                        </div>
+                        <h4>Privacy by Design</h4>
+                        <p>Your data is yours. We build privacy and security into every feature from day one.</p>
+                    </div>
+
+                    <div class="value-card premium-card">
+                        <div class="value-icon">
+                            <i class="fas fa-globe animate-glow"></i>
+                        </div>
+                        <h4>Global Impact</h4>
+                        <p>We believe productivity tools should be accessible to everyone, everywhere.</p>
+                    </div>
+
+                    <div class="value-card premium-card">
+                        <div class="value-icon">
+                            <i class="fas fa-heart animate-heartbeat"></i>
+                        </div>
+                        <h4>User-Centric</h4>
+                        <p>Every decision we make starts with understanding and serving our users' needs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section premium-section">
+        <div class="container">
+            <div class="section-header animate-fadeInUp">
+                <h2 class="section-title">
+                    <span class="title-gradient">Get In Touch</span>
+                </h2>
+                <p class="section-subtitle">We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+            </div>
+
+            <div class="contact-content">
+                <div class="contact-info animate-fadeInLeft">
+                    <div class="contact-card premium-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope animate-bounce"></i>
+                        </div>
+                        <h3>Email Us</h3>
+                        <p>hello@focuszone.com</p>
+                        <p>support@focuszone.com</p>
+                    </div>
+
+                    <div class="contact-card premium-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone animate-ring"></i>
+                        </div>
+                        <h3>Call Us</h3>
+                        <p>+91 8652487033</p>
+                        <p>Available 24/7</p>
+                    </div>
+
+                    <div class="contact-card premium-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt animate-bounce"></i>
+                        </div>
+                        <h3>Visit Us</h3>
+                        <p>Elite Forums<br>
+                        , Virar 400092<br>
+                        Virar</p>
+                    </div>
+
+                    <div class="social-links">
+                        <h3>Follow Us</h3>
+                        <div class="social-icons">
+                            <a href="#" class="social-icon hover-bounce">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="social-icon hover-bounce">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="social-icon hover-bounce">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="#" class="social-icon hover-bounce">
+                                <i class="fab fa-discord"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form animate-fadeInRight">
+                    <form class="premium-contact-form" onsubmit="handleContactSubmit(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <div class="input-container">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" id="firstName" name="firstName" placeholder="John" required>
+                                    <div class="input-highlight"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <div class="input-container">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" id="lastName" name="lastName" placeholder="Doe" required>
+                                    <div class="input-highlight"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <div class="input-container">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                                <div class="input-highlight"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <div class="input-container">
+                                <i class="fas fa-tag"></i>
+                                <select id="subject" name="subject" required>
+                                    <option value="">Choose a subject</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="support">Technical Support</option>
+                                    <option value="billing">Billing Question</option>
+                                    <option value="feature">Feature Request</option>
+                                    <option value="partnership">Partnership</option>
+                                    <option value="press">Press Inquiry</option>
+                                </select>
+                                <div class="input-highlight"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <div class="input-container">
+                                <i class="fas fa-comment"></i>
+                                <textarea id="message" name="message" rows="6" placeholder="Tell us how we can help you..." required></textarea>
+                                <div class="input-highlight"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="newsletter" name="newsletter">
+                                <span class="checkbox-mark"></span>
+                                <span class="checkbox-text">Subscribe to our newsletter for productivity tips and updates</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn-premium btn-full contact-submit">
+                            <span>Send Message</span>
+                            <div class="btn-glow"></div>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Premium Modals (Login & Register) -->
+    <div id="loginModal" class="premium-modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content-premium">
+            <div class="modal-header">
+                <h2><i class="fas fa-sign-in-alt"></i> Welcome Back</h2>
+                <button class="modal-close" onclick="closeModal('loginModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form class="premium-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <div class="input-container">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" placeholder="Enter your email" required>
+                        <div class="input-highlight"></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-container">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" placeholder="Enter your password" required>
+                        <button type="button" class="password-toggle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <div class="input-highlight"></div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-premium btn-full">
+                    <span>Sign In</span>
+                    <div class="btn-glow"></div>
+                </button>
+                
+                <div class="form-footer">
+                    <p>Don't have an account? <a href="#" onclick="switchModal('loginModal', 'registerModal')">Create one</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="registerModal" class="premium-modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content-premium">
+            <div class="modal-header">
+                <h2><i class="fas fa-rocket"></i> Join FocusZone</h2>
+                <button class="modal-close" onclick="closeModal('registerModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form class="premium-form" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <div class="input-container">
+                        <i class="fas fa-user"></i>
+                        <input type="text" placeholder="Enter your name" required>
+                        <div class="input-highlight"></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <div class="input-container">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" placeholder="Enter your email" required>
+                        <div class="input-highlight"></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-container">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" placeholder="Create a password" required>
+                        <div class="input-highlight"></div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-premium btn-full">
+                    <span>Create Account</span>
+                    <div class="btn-glow"></div>
+                </button>
+                
+                <div class="form-footer">
+                    <p>Already have an account? <a href="#" onclick="switchModal('registerModal', 'loginModal')">Sign in</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Floating Assistant -->
+    <div class="floating-assistant">
+        <button class="fab-main" onclick="toggleAssistant()">
+            <i class="fas fa-robot"></i>
+            <div class="fab-pulse animate-pulse"></div>
+        </button>
+        <div class="fab-menu">
+            <button class="fab-option" onclick="navigateTo('pages/focus-mode.html')">
+                <i class="fas fa-bullseye"></i>
+                <span>Quick Focus</span>
+            </button>
+            <button class="fab-option" onclick="navigateTo('pages/daily-goals.html')">
+                <i class="fas fa-target"></i>
+                <span>Daily Goals</span>
+            </button>
+            <button class="fab-option" onclick="navigateTo('pages/ai-chatbot.html')">
+                <i class="fas fa-brain"></i>
+                <span>Ask AI</span>
+            </button>
+            <button class="fab-option" onclick="scrollToSection('contact')">
+                <i class="fas fa-envelope"></i>
+                <span>Contact</span>
+            </button>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Smooth scrolling to sections
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                const headerOffset = 100;
+                const elementPosition = element.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // Navigation functions
+        function navigateTo(url) {
+            const loader = document.createElement('div');
+            loader.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0,0,0,0.9); backdrop-filter: blur(20px);
+                display: flex; align-items: center; justify-content: center;
+                z-index: 9999; color: white; font-family: Inter;
+            `;
+            loader.innerHTML = `
+                <div style="text-align: center;">
+                    <div style="width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.3); 
+                         border-top: 4px solid #667eea; border-radius: 50%; 
+                         animation: spin 1s linear infinite; margin: 0 auto 1rem;"></div>
+                    <p style="font-size: 18px; font-weight: 500;">Loading premium experience...</p>
+                </div>
+            `;
+            document.body.appendChild(loader);
+            setTimeout(() => window.location.href = url, 800);
+        }
+
+        // Modal functions
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            const content = modal.querySelector('.modal-content-premium');
+            content.style.transform = 'scale(0.8) translateY(-50px)';
+            content.style.opacity = '0';
+            
+            setTimeout(() => {
+                content.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                content.style.transform = 'scale(1) translateY(0)';
+                content.style.opacity = '1';
+            }, 10);
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            const content = modal.querySelector('.modal-content-premium');
+            content.style.transform = 'scale(0.8) translateY(-50px)';
+            content.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }, 300);
+        }
+
+        function switchModal(from, to) {
+            closeModal(from);
+            setTimeout(() => openModal(to), 350);
+        }
+
+        // Floating Assistant
+        let assistantOpen = false;
+        function toggleAssistant() {
+            const assistant = document.querySelector('.floating-assistant');
+            assistantOpen = !assistantOpen;
+            assistant.classList.toggle('active', assistantOpen);
+        }
+
+        // Form handlers
+        function handleLogin(event) {
+            event.preventDefault();
+            showNotification('Login successful! Welcome back!', 'success');
+            closeModal('loginModal');
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            showNotification('Registration successful! Welcome to FocusZone!', 'success');
+            closeModal('registerModal');
+        }
+
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const submitBtn = event.target.querySelector('.contact-submit');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '<div style="width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid white; border-radius: 50%; animation: spin 1s linear infinite;"></div>';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                showNotification('Message sent successfully! We\'ll get back to you soon.', 'success');
+                event.target.reset();
+            }, 2000);
+        }
+
+        // Counter animation for stats
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number[data-target]');
+            
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const duration = 2000;
+                const step = target / (duration / 16);
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= target) {
+                        counter.textContent = target.toLocaleString();
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = Math.floor(current).toLocaleString();
+                    }
+                }, 16);
+            });
+        }
+
+        // Theme toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeCheckbox = document.getElementById('theme-checkbox');
+            
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                themeCheckbox.checked = true;
+            }
+            
+            themeCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    document.body.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                    showNotification('Switched to dark mode', 'success');
+                } else {
+                    document.body.removeAttribute('data-theme');
+                    localStorage.setItem('theme', 'light');
+                    showNotification('Switched to light mode', 'success');
+                }
+            });
+
+            // Password toggles
+            document.querySelectorAll('.password-toggle').forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const input = this.previousElementSibling;
+                    const icon = this.querySelector('i');
+                    
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icon.className = 'fas fa-eye-slash';
+                    } else {
+                        input.type = 'password';
+                        icon.className = 'fas fa-eye';
+                    }
+                });
+            });
+
+            // Animate counters when in view
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && entry.target.classList.contains('company-stats')) {
+                        animateCounters();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+
+            const statsSection = document.querySelector('.company-stats');
+            if (statsSection) {
+                observer.observe(statsSection);
+            }
+        });
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed; top: 20px; right: 20px;
+                background: ${type === 'success' ? '#10b981' : '#667eea'};
+                color: white; padding: 16px 24px; border-radius: 12px;
+                font-weight: 500; z-index: 10000; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                transform: translateX(100%); transition: all 0.4s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.style.transform = 'translateX(0)', 10);
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => notification.remove(), 400);
+            }, 4000);
+        }
+
+        // Add CSS animations
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin { to { transform: rotate(360deg); } }
+            @keyframes ring {
+                0%, 100% { transform: rotate(-15deg); }
+                50% { transform: rotate(15deg); }
+            }
+            .animate-ring { animation: ring 2s ease-in-out infinite; }
+            .hover-bounce:hover { animation: bounce 0.6s ease; }
+            .floating-assistant.active .fab-menu {
+                opacity: 1; visibility: visible; transform: translateY(0);
+            }
+            .fab-menu {
+                position: absolute; bottom: 70px; right: 0; display: flex;
+                flex-direction: column; gap: 12px; opacity: 0; visibility: hidden;
+                transform: translateY(20px); transition: all 0.3s ease;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
