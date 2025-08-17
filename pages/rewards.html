@@ -3,440 +3,561 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rewards - FocusZone</title>
-    <link rel="stylesheet" href="../css/premium-styles.css">
-    <link rel="stylesheet" href="../css/animations.css">
-    <link rel="stylesheet" href="../css/components.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>Focus Rewards</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .reward-card {
+            transition: all 0.3s ease;
+        }
+        
+        .reward-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .points-animation {
+            animation: pointsGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes pointsGlow {
+            from {
+                box-shadow: 0 0 20px rgba(147, 51, 234, 0.3);
+            }
+            to {
+                box-shadow: 0 0 30px rgba(147, 51, 234, 0.6);
+            }
+        }
+        
+        .badge-animation {
+            animation: badgeBounce 0.6s ease-out;
+        }
+        
+        @keyframes badgeBounce {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #f59e0b;
+            animation: confetti-fall 3s linear infinite;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .premium-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .vip-gradient {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .luxury-gradient {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+
+        .scholar-gradient {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .exclusive-gradient {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+        }
+    </style>
 </head>
-<body>
-    <!-- Animated Background -->
-    <div class="animated-background">
-        <div class="gradient-orb orb-1"></div>
-        <div class="gradient-orb orb-2"></div>
-        <div class="gradient-orb orb-3"></div>
-    </div>
+<body class="min-h-screen bg-gradient-to-br from-purple-50 to-pink-100 p-4">
+    <div class="max-w-4xl mx-auto py-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div id="headerAnimation" class="text-4xl">🌳</div>
+            </div>
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Congratulations! 🎉</h1>
+            <p class="text-gray-600">You've earned amazing rewards for your focus session</p>
+        </div>
 
-    <!-- Navigation -->
-    <nav class="premium-navbar">
-        <div class="nav-container">
-            <div class="logo-container">
-                <div class="logo-icon">
-                    <i class="fas fa-gem"></i>
+        <!-- Session Summary -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Session Summary</h2>
+            <div class="grid grid-cols-3 gap-4">
+                <div class="text-center p-4 bg-blue-50 rounded-xl">
+                    <div class="text-2xl font-bold text-blue-600" id="sessionDuration">25</div>
+                    <div class="text-sm text-gray-600">Minutes Focused</div>
                 </div>
-                <div class="logo-text">
-                    <h2>Rewards</h2>
-                    <span class="logo-subtitle">Gamification</span>
+                <div class="text-center p-4 bg-green-50 rounded-xl">
+                    <div class="text-2xl font-bold text-green-600" id="sessionDate">Today</div>
+                    <div class="text-sm text-gray-600">Completed</div>
+                </div>
+                <div class="text-center p-4 bg-purple-50 rounded-xl">
+                    <div class="text-2xl" id="sessionAnimation">🌳</div>
+                    <div class="text-sm text-gray-600">Achievement</div>
                 </div>
             </div>
-            <button class="btn-glass" onclick="goBack()">
-                <i class="fas fa-arrow-left"></i>
-                <span>Back</span>
-            </button>
         </div>
-    </nav>
 
-    <!-- Player Stats Header -->
-    <section class="player-stats">
-        <div class="container">
-            <div class="stats-container">
-                <div class="player-info">
-                    <div class="player-avatar">
-                        <img src="https://ui-avatars.com/api/?name=John+Doe&background=667eea&color=fff&size=80" alt="Avatar">
-                        <div class="level-badge">
-                            <span>LVL 12</span>
-                        </div>
+        <!-- Points Earned -->
+        <div class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl shadow-lg p-6 mb-6 text-white points-animation">
+            <div class="text-center">
+                <h2 class="text-xl font-semibold mb-2">Points Earned</h2>
+                <div class="text-5xl font-bold mb-2" id="pointsEarned">250</div>
+                <p class="text-purple-100">Focus Points</p>
+            </div>
+        </div>
+
+        <!-- Premium Rewards Grid -->
+        <div class="grid gap-4 mb-6">
+            <!-- VIP Concert Tickets -->
+            <div id="vipConcertCard" class="bg-white rounded-2xl shadow-lg p-6 reward-card vip-gradient text-white">
+                <div class="flex items-center">
+                    <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-4">
+                        <div class="text-2xl">🎵</div>
                     </div>
-                    <div class="player-details">
-                        <h2>John Doe</h2>
-                        <p>Productivity Master</p>
-                        <div class="xp-container">
-                            <div class="xp-bar">
-                                <div class="xp-fill" style="width: 65%">
-                                    <div class="xp-shine"></div>
-                                </div>
-                            </div>
-                            <span class="xp-text">1,250 / 2,000 XP</span>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-white">VIP Concert Experience</h3>
+                        <p class="text-sm text-white text-opacity-90">Backstage access + Meet & Greet</p>
+                        <div class="text-xs text-white text-opacity-75 mt-1">Requires: 5,000 points</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="bg-white bg-opacity-20 text-white text-xs font-medium px-3 py-1 rounded-full">
+                            Premium
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Sports Car Discount -->
+            <div id="sportsCarCard" class="bg-white rounded-2xl shadow-lg p-6 reward-card luxury-gradient text-white">
+                <div class="flex items-center">
+                    <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-4">
+                        <div class="text-2xl">🏎️</div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-white">Sports Car Discount</h3>
+                        <p class="text-sm text-white text-opacity-90">15% off luxury vehicle purchase</p>
+                        <div class="text-xs text-white text-opacity-75 mt-1">Requires: 10,000 points</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="bg-white bg-opacity-20 text-white text-xs font-medium px-3 py-1 rounded-full">
+                            Luxury
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scholar Badge -->
+            <div id="scholarCard" class="bg-white rounded-2xl shadow-lg p-6 reward-card scholar-gradient">
+                <div class="flex items-center">
+                    <div class="w-16 h-16 bg-white bg-opacity-30 rounded-full flex items-center justify-center mr-4">
+                        <div class="text-2xl">🎓</div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-gray-800">Scholar Achievement</h3>
+                        <p class="text-sm text-gray-700">Academic excellence recognition</p>
+                        <div class="text-xs text-gray-600 mt-1">Unlocked with this session!</div>
+                    </div>
+                    <div class="badge-animation">
+                        <span class="bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full">Earned!</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Private Jet Experience -->
+            <div id="jetCard" class="bg-white rounded-2xl shadow-lg p-6 reward-card exclusive-gradient text-white">
+                <div class="flex items-center">
+                    <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-4">
+                        <div class="text-2xl">✈️</div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-white">Private Jet Weekend</h3>
+                        <p class="text-sm text-white text-opacity-90">Luxury travel experience</p>
+                        <div class="text-xs text-white text-opacity-75 mt-1">Requires: 25,000 points</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="bg-white bg-opacity-20 text-white text-xs font-medium px-3 py-1 rounded-full">
+                            Exclusive
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Michelin Star Dinner -->
+            <div id="dinnerCard" class="bg-white rounded-2xl shadow-lg p-6 reward-card premium-gradient text-white">
+                <div class="flex items-center">
+                    <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-4">
+                        <div class="text-2xl">🍽️</div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-white">Michelin Star Dining</h3>
+                        <p class="text-sm text-white text-opacity-90">Chef's table experience for two</p>
+                        <div class="text-xs text-white text-opacity-75 mt-1">Requires: 3,000 points</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="bg-white bg-opacity-20 text-white text-xs font-medium px-3 py-1 rounded-full">
+                            Gourmet
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tech Gadget Bundle -->
+            <div id="techCard" class="bg-white rounded-2xl shadow-lg p-6 reward-card">
+                <div class="flex items-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                        <div class="text-2xl">📱</div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-gray-800">Latest Tech Bundle</h3>
+                        <p class="text-sm text-gray-600">Premium gadgets & accessories</p>
+                        <div class="text-xs text-gray-500 mt-1">Requires: 2,000 points</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full">
+                            Available
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spa Retreat -->
+            <div id="spaCard" class="bg-white rounded-2xl shadow-lg p-6 reward-card">
+                <div class="flex items-center">
+                    <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mr-4">
+                        <div class="text-2xl">🧘‍♀️</div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-gray-800">Luxury Spa Retreat</h3>
+                        <p class="text-sm text-gray-600">3-day wellness getaway</p>
+                        <div class="text-xs text-gray-500 mt-1">Requires: 4,000 points</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="bg-pink-100 text-pink-800 text-xs font-medium px-3 py-1 rounded-full">
+                            Wellness
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Master Class Access -->
+            <div id="masterClassCard" class="bg-white rounded-2xl shadow-lg p-6 reward-card">
+                <div class="flex items-center">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mr-4">
+                        <div class="text-2xl">📚</div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-gray-800">MasterClass Premium</h3>
+                        <p class="text-sm text-gray-600">1-year all-access pass</p>
+                        <div class="text-xs text-gray-500 mt-1">Requires: 1,500 points</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="bg-indigo-100 text-indigo-800 text-xs font-medium px-3 py-1 rounded-full">
+                            Learning
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Productivity Coach -->
+            <div id="coachCard" class="bg-white rounded-2xl shadow-lg p-6 reward-card">
+                <div class="flex items-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                        <div class="text-2xl">👨‍💼</div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-gray-800">Personal Productivity Coach</h3>
+                        <p class="text-sm text-gray-600">1-on-1 coaching sessions</p>
+                        <div class="text-xs text-gray-500 mt-1">Requires: 3,500 points</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full">
+                            Coaching
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gaming Setup -->
+            <div id="gamingCard" class="bg-white rounded-2xl shadow-lg p-6 reward-card">
+                <div class="flex items-center">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mr-4">
+                        <div class="text-2xl">🎮</div>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-gray-800">Ultimate Gaming Setup</h3>
+                        <p class="text-sm text-gray-600">High-end PC + peripherals</p>
+                        <div class="text-xs text-gray-500 mt-1">Requires: 8,000 points</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="bg-purple-100 text-purple-800 text-xs font-medium px-3 py-1 rounded-full">
+                            Gaming
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Streak Bonus -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+            <div class="flex items-center">
+                <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mr-4">
+                    <svg class="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"></path>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-semibold text-gray-800">Daily Streak Bonus</h3>
+                    <p class="text-sm text-gray-600">Keep the momentum going for bigger rewards!</p>
+                </div>
+                <div class="text-right">
+                    <div class="text-2xl font-bold text-orange-500" id="streakCount">1</div>
+                    <div class="text-xs text-gray-500">days</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Stats -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Your Progress</h2>
+            <div class="grid grid-cols-4 gap-4 text-center">
+                <div>
+                    <div class="text-2xl font-bold text-purple-600" id="totalPoints">250</div>
+                    <div class="text-sm text-gray-600">Total Points</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-blue-600" id="totalSessions">1</div>
+                    <div class="text-sm text-gray-600">Sessions</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-green-600" id="totalMinutes">25</div>
+                    <div class="text-sm text-gray-600">Total Minutes</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-yellow-600" id="totalBadges">1</div>
+                    <div class="text-sm text-gray-600">Badges</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Milestone Progress -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Next Milestone</h2>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium text-gray-700">Progress to Tech Bundle</span>
+                    <span class="text-sm text-gray-500" id="techProgress">250/2000 points</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div id="techProgressBar" class="bg-blue-500 h-2 rounded-full transition-all duration-500" style="width: 12.5%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="space-y-3">
+            <button onclick="goBackToFocus()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-lg">
+                Start Another Session
+            </button>
+            <button onclick="shareProgress()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-xl transition-all duration-300">
+                Share Your Achievement
+            </button>
+            <button onclick="viewRewardsCatalog()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300">
+                Browse All Rewards
+            </button>
+        </div>
+    </div>
+
+    <!-- Confetti Container -->
+    <div id="confettiContainer" class="fixed inset-0 pointer-events-none"></div>
+
+    <script>
+        // Load session data and update rewards
+        function loadSessionData() {
+            const sessionData = JSON.parse(localStorage.getItem('lastFocusSession') || '{}');
+            const allTimeStats = JSON.parse(localStorage.getItem('focusStats') || '{"totalPoints": 0, "totalSessions": 0, "totalMinutes": 0, "streak": 0, "badges": 0}');
+            
+            if (sessionData.duration) {
+                // Update session summary
+                document.getElementById('sessionDuration').textContent = sessionData.duration;
+                document.getElementById('sessionDate').textContent = new Date(sessionData.completedAt).toLocaleDateString();
+                document.getElementById('pointsEarned').textContent = sessionData.points;
+                document.getElementById('sessionAnimation').textContent = sessionData.completedEmoji || '🌳';
+                document.getElementById('headerAnimation').textContent = sessionData.completedEmoji || '🌳';
                 
-                <div class="currency-display">
-                    <div class="currency-item">
-                        <div class="currency-icon">
-                            <i class="fas fa-coins"></i>
-                        </div>
-                        <span class="currency-amount">1,847</span>
-                        <span class="currency-label">Coins</span>
-                    </div>
-                    <div class="currency-item">
-                        <div class="currency-icon">
-                            <i class="fas fa-gem"></i>
-                        </div>
-                        <span class="currency-amount">23</span>
-                        <span class="currency-label">Gems</span>
-                    </div>
-                    <div class="currency-item">
-                        <div class="currency-icon">
-                            <i class="fas fa-trophy"></i>
-                        </div>
-                        <span class="currency-amount">15</span>
-                        <span class="currency-label">Trophies</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+                // Update all-time stats
+                allTimeStats.totalPoints += sessionData.points;
+                allTimeStats.totalSessions += 1;
+                allTimeStats.totalMinutes += sessionData.duration;
+                allTimeStats.streak = calculateStreak();
+                allTimeStats.badges += 1;
+                
+                // Update streak display
+                document.getElementById('streakCount').textContent = allTimeStats.streak;
+                
+                // Save updated stats
+                localStorage.setItem('focusStats', JSON.stringify(allTimeStats));
+                
+                // Update reward availability
+                updateRewardAvailability(allTimeStats.totalPoints);
+            }
+            
+            // Display total stats
+            document.getElementById('totalPoints').textContent = allTimeStats.totalPoints;
+            document.getElementById('totalSessions').textContent = allTimeStats.totalSessions;
+            document.getElementById('totalMinutes').textContent = allTimeStats.totalMinutes;
+            document.getElementById('totalBadges').textContent = allTimeStats.badges;
+            
+            // Update progress bars
+            updateProgressBars(allTimeStats.totalPoints);
+        }
 
-    <!-- Rewards Tabs -->
-    <section class="rewards-section">
-        <div class="container">
-            <div class="rewards-tabs">
-                <button class="tab-btn active" data-tab="daily">Daily Rewards</button>
-                <button class="tab-btn" data-tab="achievements">Achievements</button>
-                <button class="tab-btn" data-tab="store">Reward Store</button>
-                <button class="tab-btn" data-tab="leaderboard">Leaderboard</button>
-            </div>
+        function updateRewardAvailability(totalPoints) {
+            const rewards = [
+                { id: 'techCard', points: 2000, available: totalPoints >= 2000 },
+                { id: 'dinnerCard', points: 3000, available: totalPoints >= 3000 },
+                { id: 'spaCard', points: 4000, available: totalPoints >= 4000 },
+                { id: 'vipConcertCard', points: 5000, available: totalPoints >= 5000 },
+                { id: 'gamingCard', points: 8000, available: totalPoints >= 8000 },
+                { id: 'sportsCarCard', points: 10000, available: totalPoints >= 10000 },
+                { id: 'jetCard', points: 25000, available: totalPoints >= 25000 }
+            ];
 
-            <!-- Daily Rewards Tab -->
-            <div class="tab-content active" id="daily-tab">
-                <div class="daily-rewards-grid">
-                    <div class="daily-reward-card claimed">
-                        <div class="reward-day">Day 1</div>
-                        <div class="reward-icon">
-                            <i class="fas fa-coins"></i>
-                        </div>
-                        <div class="reward-amount">50 Coins</div>
-                        <div class="reward-status">
-                            <i class="fas fa-check"></i>
-                            <span>Claimed</span>
-                        </div>
-                    </div>
+            rewards.forEach(reward => {
+                const card = document.getElementById(reward.id);
+                if (reward.available) {
+                    // Add available styling
+                    const badge = card.querySelector('.text-xs.font-medium');
+                    if (badge) {
+                        badge.textContent = 'Available!';
+                        badge.className = 'bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full';
+                    }
+                }
+            });
+        }
 
-                    <div class="daily-reward-card claimed">
-                        <div class="reward-day">Day 2</div>
-                        <div class="reward-icon">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <div class="reward-amount">100 XP</div>
-                        <div class="reward-status">
-                            <i class="fas fa-check"></i>
-                            <span>Claimed</span>
-                        </div>
-                    </div>
+        function updateProgressBars(totalPoints) {
+            // Tech Bundle Progress
+            const techProgress = Math.min((totalPoints / 2000) * 100, 100);
+            document.getElementById('techProgressBar').style.width = techProgress + '%';
+            document.getElementById('techProgress').textContent = `${totalPoints}/2000 points`;
+        }
 
-                    <div class="daily-reward-card available">
-                        <div class="reward-day">Day 3</div>
-                        <div class="reward-icon">
-                            <i class="fas fa-gem"></i>
-                        </div>
-                        <div class="reward-amount">5 Gems</div>
-                        <div class="reward-status">
-                            <button class="claim-btn" onclick="claimReward(3)">
-                                <span>Claim</span>
-                                <div class="btn-glow"></div>
-                            </button>
-                        </div>
-                        <div class="reward-glow"></div>
-                    </div>
+        function calculateStreak() {
+            const sessions = JSON.parse(localStorage.getItem('focusSessions') || '[]');
+            const today = new Date().toDateString();
+            
+            // Add today's session
+            if (!sessions.includes(today)) {
+                sessions.push(today);
+                localStorage.setItem('focusSessions', JSON.stringify(sessions));
+            }
+            
+            // Calculate consecutive days
+            let streak = 1;
+            const sortedSessions = sessions.sort((a, b) => new Date(b) - new Date(a));
+            
+            for (let i = 1; i < sortedSessions.length; i++) {
+                const currentDate = new Date(sortedSessions[i-1]);
+                const previousDate = new Date(sortedSessions[i]);
+                const dayDiff = (currentDate - previousDate) / (1000 * 60 * 60 * 24);
+                
+                if (dayDiff === 1) {
+                    streak++;
+                } else {
+                    break;
+                }
+            }
+            
+            return streak;
+        }
 
-                    <div class="daily-reward-card locked">
-                        <div class="reward-day">Day 4</div>
-                        <div class="reward-icon">
-                            <i class="fas fa-coins"></i>
-                        </div>
-                        <div class="reward-amount">150 Coins</div>
-                        <div class="reward-status">
-                            <i class="fas fa-lock"></i>
-                            <span>Locked</span>
-                        </div>
-                    </div>
+        function createConfetti() {
+            const colors = ['#f59e0b', '#3b82f6', '#10b981', '#ef4444', '#8b5cf6', '#f97316'];
+            const container = document.getElementById('confettiContainer');
+            
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 3 + 's';
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    container.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }, i * 30);
+            }
+        }
 
-                    <div class="daily-reward-card locked">
-                        <div class="reward-day">Day 5</div>
-                        <div class="reward-icon">
-                            <i class="fas fa-trophy"></i>
-                        </div>
-                        <div class="reward-amount">1 Trophy</div>
-                        <div class="reward-status">
-                            <i class="fas fa-lock"></i>
-                            <span>Locked</span>
-                        </div>
-                    </div>
+        function goBackToFocus() {
+            window.location.href = 'focus-mode.html';
+        }
 
-                    <div class="daily-reward-card locked special">
-                        <div class="reward-day">Day 7</div>
-                        <div class="reward-icon">
-                            <i class="fas fa-gift"></i>
-                        </div>
-                        <div class="reward-amount">Mystery Box</div>
-                        <div class="reward-status">
-                            <i class="fas fa-lock"></i>
-                            <span>Locked</span>
-                        </div>
-                        <div class="special-badge">BONUS</div>
-                    </div>
-                </div>
-            </div>
+        function shareProgress() {
+            const stats = JSON.parse(localStorage.getItem('focusStats') || '{}');
+            const sessionData = JSON.parse(localStorage.getItem('lastFocusSession') || '{}');
+            const text = `I just completed a ${sessionData.duration}-minute focus session and earned ${sessionData.points} points! 🎯 Total: ${stats.totalPoints} points earned! #FocusMode #Productivity`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Focus Session Complete',
+                    text: text,
+                    url: window.location.href
+                });
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(text).then(() => {
+                    const button = event.target;
+                    const originalText = button.textContent;
+                    button.textContent = 'Copied to Clipboard!';
+                    button.className = button.className.replace('bg-gray-100 hover:bg-gray-200 text-gray-700', 'bg-green-500 text-white');
+                    
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.className = button.className.replace('bg-green-500 text-white', 'bg-gray-100 hover:bg-gray-200 text-gray-700');
+                    }, 2000);
+                });
+            }
+        }
 
-            <!-- Achievements Tab -->
-            <div class="tab-content" id="achievements-tab">
-                <div class="achievements-grid">
-                    <div class="achievement-card unlocked">
-                        <div class="achievement-icon">
-                            <i class="fas fa-fire"></i>
-                        </div>
-                        <h3>Consistency Master</h3>
-                        <p>Complete 7 days in a row</p>
-                        <div class="achievement-progress">
-                            <div class="progress-premium">
-                                <div class="progress-bar-premium" style="width: 100%"></div>
-                            </div>
-                            <span class="progress-text">7/7 days</span>
-                        </div>
-                        <div class="achievement-reward">
-                            <i class="fas fa-coins"></i>
-                            <span>500 Coins</span>
-                        </div>
-                        <div class="achievement-status unlocked">
-                            <i class="fas fa-trophy"></i>
-                            <span>Unlocked</span>
-                        </div>
-                    </div>
+        function viewRewardsCatalog() {
+            alert('Full rewards catalog coming soon! Keep focusing to unlock amazing rewards! 🎁');
+        }
 
-                    <div class="achievement-card in-progress">
-                        <div class="achievement-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <h3>Time Master</h3>
-                        <p>Focus for 100 hours total</p>
-                        <div class="achievement-progress">
-                            <div class="progress-premium">
-                                <div class="progress-bar-premium" style="width: 75%"></div>
-                            </div>
-                            <span class="progress-text">75/100 hours</span>
-                        </div>
-                        <div class="achievement-reward">
-                            <i class="fas fa-gem"></i>
-                            <span>10 Gems</span>
-                        </div>
-                        <div class="achievement-status in-progress">
-                            <div class="progress-ring">
-                                <div class="progress-ring-fill" style="stroke-dasharray: 75, 100"></div>
-                            </div>
-                            <span>75%</span>
-                        </div>
-                    </div>
-
-                    <div class="achievement-card locked">
-                        <div class="achievement-icon">
-                            <i class="fas fa-brain"></i>
-                        </div>
-                        <h3>Knowledge Seeker</h3>
-                        <p>Ask AI 500 questions</p>
-                        <div class="achievement-progress">
-                            <div class="progress-premium">
-                                <div class="progress-bar-premium" style="width: 45%"></div>
-                            </div>
-                            <span class="progress-text">225/500 questions</span>
-                        </div>
-                        <div class="achievement-reward">
-                            <i class="fas fa-trophy"></i>
-                            <span>Special Badge</span>
-                        </div>
-                        <div class="achievement-status locked">
-                            <i class="fas fa-lock"></i>
-                            <span>Locked</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Reward Store Tab -->
-            <div class="tab-content" id="store-tab">
-                <div class="store-categories">
-                    <button class="category-btn active" data-category="themes">Themes</button>
-                    <button class="category-btn" data-category="avatars">Avatars</button>
-                    <button class="category-btn" data-category="powerups">Power-ups</button>
-                    <button class="category-btn" data-category="premium">Premium</button>
-                </div>
-
-                <div class="store-grid">
-                    <div class="store-item">
-                        <div class="item-preview">
-                            <div class="theme-preview dark-theme">
-                                <div class="preview-elements">
-                                    <div class="element-1"></div>
-                                    <div class="element-2"></div>
-                                    <div class="element-3"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <h3>Dark Theme</h3>
-                        <p>Sleek dark interface for night owls</p>
-                        <div class="item-price">
-                            <i class="fas fa-coins"></i>
-                            <span>500 Coins</span>
-                        </div>
-                        <button class="purchase-btn owned">
-                            <i class="fas fa-check"></i>
-                            <span>Owned</span>
-                        </button>
-                    </div>
-
-                    <div class="store-item">
-                        <div class="item-preview">
-                            <div class="avatar-preview">
-                                <i class="fas fa-user-astronaut"></i>
-                            </div>
-                        </div>
-                        <h3>Astronaut Avatar</h3>
-                        <p>Reach for the stars with this space theme</p>
-                        <div class="item-price">
-                            <i class="fas fa-gem"></i>
-                            <span>5 Gems</span>
-                        </div>
-                        <button class="purchase-btn" onclick="purchaseItem('astronaut-avatar')">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span>Buy Now</span>
-                        </button>
-                    </div>
-
-                    <div class="store-item special">
-                        <div class="item-preview">
-                            <div class="powerup-preview">
-                                <i class="fas fa-bolt"></i>
-                            </div>
-                        </div>
-                        <h3>2x XP Boost</h3>
-                        <p>Double XP for 24 hours</p>
-                        <div class="item-price">
-                            <i class="fas fa-gem"></i>
-                            <span>10 Gems</span>
-                        </div>
-                        <button class="purchase-btn premium">
-                            <i class="fas fa-crown"></i>
-                            <span>Premium</span>
-                        </button>
-                        <div class="special-badge">LIMITED</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Leaderboard Tab -->
-            <div class="tab-content" id="leaderboard-tab">
-                <div class="leaderboard-filters">
-                    <button class="filter-btn active" data-filter="weekly">This Week</button>
-                    <button class="filter-btn" data-filter="monthly">This Month</button>
-                    <button class="filter-btn" data-filter="alltime">All Time</button>
-                </div>
-
-                <div class="leaderboard-list">
-                    <div class="leaderboard-item rank-1">
-                        <div class="rank-badge">
-                            <i class="fas fa-crown"></i>
-                            <span>1</span>
-                        </div>
-                        <div class="player-info">
-                            <img src="https://ui-avatars.com/api/?name=Sarah+Johnson&background=f59e0b&color=fff&size=50" alt="Player">
-                            <div class="player-details">
-                                <span class="player-name">Sarah Johnson</span>
-                                <span class="player-stats">Level 15 • 2,450 XP</span>
-                            </div>
-                        </div>
-                        <div class="player-score">
-                            <span class="score-value">8h 45m</span>
-                            <span class="score-label">Focus Time</span>
-                        </div>
-                    </div>
-
-                    <div class="leaderboard-item rank-2">
-                        <div class="rank-badge">
-                            <span>2</span>
-                        </div>
-                        <div class="player-info">
-                            <img src="https://ui-avatars.com/api/?name=Mike+Chen&background=3b82f6&color=fff&size=50" alt="Player">
-                            <div class="player-details">
-                                <span class="player-name">Mike Chen</span>
-                                <span class="player-stats">Level 13 • 1,890 XP</span>
-                            </div>
-                        </div>
-                        <div class="player-score">
-                            <span class="score-value">7h 30m</span>
-                            <span class="score-label">Focus Time</span>
-                        </div>
-                    </div>
-
-                    <div class="leaderboard-item rank-3">
-                        <div class="rank-badge">
-                            <span>3</span>
-                        </div>
-                        <div class="player-info">
-                            <img src="https://ui-avatars.com/api/?name=Emma+Davis&background=ef4444&color=fff&size=50" alt="Player">
-                            <div class="player-details">
-                                <span class="player-name">Emma Davis</span>
-                                <span class="player-stats">Level 12 • 1,650 XP</span>
-                            </div>
-                        </div>
-                        <div class="player-score">
-                            <span class="score-value">6h 55m</span>
-                            <span class="score-label">Focus Time</span>
-                        </div>
-                    </div>
-
-                    <div class="leaderboard-item current-player">
-                        <div class="rank-badge">
-                            <span>8</span>
-                        </div>
-                        <div class="player-info">
-                            <img src="https://ui-avatars.com/api/?name=John+Doe&background=667eea&color=fff&size=50" alt="Player">
-                            <div class="player-details">
-                                <span class="player-name">John Doe (You)</span>
-                                <span class="player-stats">Level 12 • 1,250 XP</span>
-                            </div>
-                        </div>
-                        <div class="player-score">
-                            <span class="score-value">4h 20m</span>
-                            <span class="score-label">Focus Time</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Claim Reward Modal -->
-    <div id="claimRewardModal" class="premium-modal">
-        <div class="modal-backdrop"></div>
-        <div class="modal-content-premium reward-modal">
-            <div class="reward-celebration">
-                <div class="reward-burst">
-                    <div class="burst-particle"></div>
-                    <div class="burst-particle"></div>
-                    <div class="burst-particle"></div>
-                    <div class="burst-particle"></div>
-                </div>
-                <div class="claimed-reward-icon">
-                    <i class="fas fa-gem"></i>
-                </div>
-            </div>
-            <h2>Reward Claimed!</h2>
-            <p>You've successfully claimed your daily reward</p>
-            <div class="claimed-items">
-                <div class="claimed-item">
-                    <i class="fas fa-gem"></i>
-                    <span>+5 Gems</span>
-                </div>
-            </div>
-            <button class="btn-premium btn-full" onclick="closeModal('claimRewardModal')">
-                <span>Awesome!</span>
-                <div class="btn-glow"></div>
-            </button>
-        </div>
-    </div>
-
-    <script src="../js/main.js"></script>
-    <script src="../js/rewards.js"></script>
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSessionData();
+            createConfetti();
+        });
+    </script>
 </body>
 </html>
